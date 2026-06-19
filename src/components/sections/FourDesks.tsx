@@ -1,36 +1,34 @@
 import PhoneFrame from "../PhoneFrame";
 import Reveal from "../Reveal";
+import AppScreen from "../screens/AppScreen";
+import type { ScreenName } from "../screens/AppScreen";
 
-const DESKS = [
+const DESKS: { label: string; tag: string; screen: ScreenName; alt: string; copy: string }[] = [
   {
     label: "YOU",
     tag: "TONIGHT",
-    dark: "/phones/dark-04-gas.png",
-    light: "/phones/light-04-gas.png",
+    screen: "cooking",
     alt: "you tonight",
     copy: "Your nightly autopsy: tokens, subagents, peak context, and a full incident report.",
   },
   {
     label: "PAPER",
     tag: "THE FEED",
-    dark: "/phones/dark-06-feed.png",
-    light: "/phones/light-06-feed.png",
+    screen: "feed",
     alt: "the feed",
     copy: "Everyone else's flops, fit to print. The anti-social feed where you follow no one.",
   },
   {
     label: "ROAST",
     tag: "MAIN EVENT",
-    dark: "/phones/dark-07-mainevent.png",
-    light: "/phones/light-07-mainevent.png",
+    screen: "roast",
     alt: "main event",
     copy: "The editor's column, written about you, in three increasingly scathing card skins.",
   },
   {
     label: "RAP",
     tag: "SHEET",
-    dark: "/phones/dark-08-rap-kanwar.png",
-    light: "/phones/light-08-rap-kanwar.png",
+    screen: "rapKanwar",
     alt: "rap sheet",
     copy: "Your permanent record. Prior offenses, career stats, times cooked: 23 and counting.",
   },
@@ -59,7 +57,9 @@ export default function FourDesks() {
               <span className="font-anton text-[24px] text-orange">{d.label}</span>
               <span className="font-mono font-semibold text-[10px] tracking-[0.16em] text-muted">{d.tag}</span>
             </div>
-            <PhoneFrame dark={d.dark} light={d.light} alt={d.alt} outerRadius={36} innerRadius={30} />
+            <PhoneFrame outerRadius={36} innerRadius={30}>
+              <AppScreen screen={d.screen} />
+            </PhoneFrame>
             <p className="m-0 text-[13.5px] leading-[1.5] text-muted">{d.copy}</p>
           </Reveal>
         ))}

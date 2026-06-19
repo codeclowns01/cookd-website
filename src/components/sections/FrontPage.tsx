@@ -1,5 +1,6 @@
 import PhoneFrame from "../PhoneFrame";
 import Reveal from "../Reveal";
+import AppScreen from "../screens/AppScreen";
 
 export default function FrontPage() {
   return (
@@ -107,13 +108,12 @@ export default function FrontPage() {
         <div className="flex-1 basis-[300px] min-w-[280px] flex flex-col gap-6">
           <Reveal ty={40} className="mx-auto" style={{ maxWidth: 300 }}>
             <PhoneFrame
-              dark="/phones/dark-09-rap-ria.png"
-              light="/phones/light-09-rap-ria.png"
-              alt="rap sheet: subscribe to her downfall"
               outerRadius={42}
               innerRadius={36}
               width={300}
-            />
+            >
+              <AppScreen screen="rapRia" />
+            </PhoneFrame>
           </Reveal>
           <Reveal ty={30} className="bg-surface border border-border rounded-xl p-[18px]">
             <div className="font-mono font-semibold text-[10px] tracking-[0.2em] text-orange mb-[10px]">THE PILE-ON</div>

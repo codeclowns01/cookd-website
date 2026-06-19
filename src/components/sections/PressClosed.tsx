@@ -1,5 +1,6 @@
 import PhoneFrame from "../PhoneFrame";
 import Reveal from "../Reveal";
+import AppScreen from "../screens/AppScreen";
 
 export default function PressClosed() {
   return (
@@ -10,12 +11,11 @@ export default function PressClosed() {
       <div className="max-w-[1120px] mx-auto flex gap-7 sm:gap-[clamp(28px,5vw,72px)] items-center flex-wrap">
         <Reveal ty={40} className="mx-auto" style={{ width: "clamp(240px, 26vw, 290px)" }}>
           <PhoneFrame
-            dark="/phones/dark-05-closed.png"
-            light="/phones/light-05-closed.png"
-            alt="press closed: back to work, chef"
             outerRadius={42}
             innerRadius={36}
-          />
+          >
+            <AppScreen screen="closed" />
+          </PhoneFrame>
         </Reveal>
         <div className="flex-1 basis-[380px] min-w-[300px]">
           <Reveal ty={34} as="div" className="inline-block font-anton text-[clamp(22px,3vw,32px)] tracking-[0.03em] text-blue border-4 border-blue rounded-[10px] px-[18px] py-[6px] mb-[22px]">

@@ -3,6 +3,7 @@ import { Anton, Fraunces, JetBrains_Mono, Schibsted_Grotesk } from "next/font/go
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Overlays from "@/components/Overlays";
+import HpDefs from "@/components/screens/HpDefs";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -48,6 +49,7 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning>
         <ThemeProvider>
+          <HpDefs />
           <Overlays />
           {children}
         </ThemeProvider>

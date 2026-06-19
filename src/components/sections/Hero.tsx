@@ -3,6 +3,7 @@ import CountUp from "../CountUp";
 import Parallax from "../Parallax";
 import PhoneFrame from "../PhoneFrame";
 import Reveal from "../Reveal";
+import AppScreen from "../screens/AppScreen";
 
 export default function Hero() {
   return (
@@ -55,6 +56,17 @@ export default function Hero() {
             >
               DOWNLOAD FOR ANDROID →
             </a>
+            <a
+              href="https://github.com/codeclowns01/cookd"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="no-underline inline-flex items-center gap-[10px] bg-surface border border-border text-ink font-anton text-[17px] tracking-[0.03em] px-[22px] py-[13px] rounded-xl hover:border-orange transition-colors"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+              OPEN SOURCE
+            </a>
           </Reveal>
           <Reveal delay={0.22} as="div" className="mt-[10px] font-mono font-semibold text-[10px] tracking-[0.16em] text-faint">
             COMING SOON FOR iOS
@@ -92,24 +104,14 @@ export default function Hero() {
             style={{ background: "radial-gradient(circle, rgba(255,77,0,0.28), rgba(255,77,0,0) 65%)" }}
           />
           <Reveal delay={0.15} ty={46} className="relative">
-            <PhoneFrame
-              dark="/phones/dark-03-cooked.png"
-              light="/phones/light-03-cooked.png"
-              alt="cookd: you did it again, chef"
-              glow
-            />
+            <PhoneFrame glow>
+              <AppScreen screen="cooked" />
+            </PhoneFrame>
             <div
               className="absolute -top-[22px] -right-[30px] rotate-[7deg] animate-[ck-float_5s_ease-in-out_infinite] font-anton text-[26px] tracking-[0.04em] text-yellow border-4 border-yellow rounded-[9px] px-4 py-[6px] bg-[rgba(14,12,10,0.55)] backdrop-blur-[4px]"
               style={{ "--r": "7deg" } as React.CSSProperties}
             >
               COOKED
-            </div>
-            <div
-              className="absolute bottom-[34px] -left-[44px] rotate-[-5deg] animate-[ck-float_6.5s_ease-in-out_infinite] bg-[rgba(242,234,217,0.06)] border border-border rounded-[10px] px-[13px] py-[9px] backdrop-blur-[10px]"
-              style={{ "--r": "-5deg" } as React.CSSProperties}
-            >
-              <div className="font-mono font-bold text-[10px] tracking-[0.16em] text-ink">GRASS: UNTOUCHED</div>
-              <div className="mt-[2px] font-mono font-semibold text-[8px] tracking-[0.16em] text-muted">VERIFIED BY USAGE</div>
             </div>
           </Reveal>
         </div>

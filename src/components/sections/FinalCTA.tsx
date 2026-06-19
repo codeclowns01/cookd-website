@@ -16,7 +16,7 @@ export default function FinalCTA() {
           THE EDITOR IS IN
         </Reveal>
         <Reveal ty={34} as="h2" className="m-0 font-anton font-normal leading-[0.9] text-[clamp(46px,9vw,118px)] uppercase text-ink">
-          Get cooked<span className="text-orange">.</span>
+          Get cookd<span className="text-orange">.</span>
         </Reveal>
         <Reveal ty={34} as="p" className="mx-auto mt-[22px] max-w-[560px] text-[clamp(17px,1.6vw,20px)] leading-[1.6] text-muted">
           Join the anti-social network for people who ship too much and sleep too little. Follow no one. Roast

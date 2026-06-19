@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<!-- hot-press-app — the FULL cookd screen set in the approved HOT PRESS language,
+     with a global dark/light toggle (press room ↔ newsprint). Screens: Auth,
+     Onboarding (deputize your machine), YOU cooked, YOU cooking, PRESS CLOSED
+     (lock), PAPER (feed), ROAST (main event), RAP SHEET (profile).
+     Design law: receipts & stamps are physical objects — cream/yellow in BOTH modes. -->
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cookd — HOT PRESS · all screens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@400;500;600;700&family=Schibsted+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<style>
+/* ============ THEME ============ */
+body{ /* dark = press room (default) */
+  --bg:#0E0C0A; --bg2:#141110; --card:#1A1714; --card2:#221E19;
+  --ink:#F2EAD9; --mut:#8d8377; --faint:#5d564c; --line:#332d26;
+  --navbg:rgba(14,12,10,.94);
+}
+body.light{ /* light = newsprint */
+  --bg:#F3EBDC; --bg2:#EDE3D0; --card:#FBF6EC; --card2:#F1E8D5;
+  --ink:#181410; --mut:#6f6557; --faint:#998c77; --line:#d9cdb8;
+  --navbg:#F3EBDC;
+}
+:root{
+  --flame:#FF4D00; --stamp:#FFC400; --morgue:#7FA7C4;
+  --paper:#F2EAD9; --paperink:#181410;
+  --claude:#D97757; --codex:#10A37F; --gemini:#4E86F7;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#070605;font-family:'Schibsted Grotesk',sans-serif;padding:96px 24px 64px;min-height:100vh}
+.grid{display:flex;flex-wrap:wrap;gap:54px 44px;justify-content:center;max-width:1500px;margin:0 auto}
+.anton{font-family:'Anton';text-transform:uppercase}
+.fra{font-family:'Fraunces',serif;font-style:italic}
+.mono{font-family:'JetBrains Mono',monospace}
+/* toolbar */
+.bar0{position:fixed;top:0;left:0;right:0;z-index:99;background:rgba(7,6,5,.92);backdrop-filter:blur(10px);border-bottom:1px solid #1d1a16;display:flex;align-items:center;gap:18px;padding:14px 26px}
+.bar0 b{font-family:'Anton';font-size:17px;color:#F2EAD9;letter-spacing:.02em}
+.bar0 b i{color:var(--flame);font-style:normal}
+.bar0 span{font:600 9.5px/1 'JetBrains Mono';letter-spacing:.16em;color:#6f675c;text-transform:uppercase}
+.toggle{margin-left:auto;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid #332d26;border-radius:99px;padding:8px 14px;color:#F2EAD9;font:600 10px/1 'JetBrains Mono';letter-spacing:.14em}
+.toggle:hover{border-color:var(--flame)}
+.phone{width:393px;height:852px;border-radius:42px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);box-shadow:0 40px 90px rgba(0,0,0,.7), inset 0 0 0 1.5px rgba(255,255,255,.07);transition:background .35s,color .35s}
+.tag0{position:absolute;top:-32px;left:2px;font:600 10.5px/1 'JetBrains Mono';letter-spacing:.18em;color:#5d564c;text-transform:uppercase}
+.wrap{position:relative}
+/* grain */
+.phone:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;mix-blend-mode:overlay;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.14'/%3E%3C/svg%3E")}
+.phone>*{position:relative;z-index:2}
+/* ============ SHARED COMPONENTS ============ */
+.ticker{background:var(--flame);color:#1a0c02;overflow:hidden;white-space:nowrap;padding:7px 0;flex:none}
+.ticker span{display:inline-block;font:700 10px/1 'JetBrains Mono';letter-spacing:.14em;animation:tick 20s linear infinite}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mhead{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 6px}
+.mast{font-family:'Anton';font-size:25px;letter-spacing:.02em}
+.mast .dot{color:var(--flame)}
+.pill{font:700 9px/1 'JetBrains Mono';letter-spacing:.15em;padding:7px 11px;border-radius:3px}
+.pill.hot{background:var(--flame);color:#1a0c02}
+.pill.cold{background:var(--morgue);color:#0c1822}
+.pill.warm{background:var(--stamp);color:#241c00}
+.body{flex:1;overflow:hidden;padding:8px 22px 0}
+.kick{font:600 9.5px/1 'JetBrains Mono';letter-spacing:.22em;color:var(--mut);margin:8px 0 8px}
+.h1{font-family:'Anton';font-size:46px;line-height:.97}
+.h1 .hot{color:var(--flame)}
+.h1 .cold{color:var(--morgue)}
+.aside{font-family:'Fraunces';font-style:italic;font-weight:340;font-size:14.5px;color:var(--mut);margin:11px 0 4px;line-height:1.45}
+/* receipt — physical: cream in both modes */
+.receipt{background:var(--paper);color:var(--paperink);border-radius:4px;padding:13px 16px 9px;
+  -webkit-mask:radial-gradient(circle at 10px 100%,transparent 5px,#000 5.5px) -10px 0/20px 100%;mask:radial-gradient(circle at 10px 100%,transparent 5px,#000 5.5px) -10px 0/20px 100%}
+.receipt h4{font:700 9.5px/1 'JetBrains Mono';letter-spacing:.18em;border-bottom:1.5px dashed #b8ab92;padding-bottom:8px;margin-bottom:3px;display:flex;justify-content:space-between}
+.receipt .row{display:flex;justify-content:space-between;font:600 11px/2.1 'JetBrains Mono';border-bottom:1px dotted #d6cab0}
+.receipt .row:last-child{border:0}
+.receipt .hotv{color:var(--flame)}
+.receipt .total{font:700 12px/2.3 'JetBrains Mono';border-top:1.5px dashed #b8ab92;display:flex;justify-content:space-between}
+/* stamp */
+.stampr{border:3.5px solid var(--stamp);color:var(--stamp);font-family:'Anton';border-radius:6px;letter-spacing:.06em;
+  animation:slam .45s .8s cubic-bezier(.1,1.8,.3,1) backwards}
+@keyframes slam{0%{transform:var(--rot,rotate(10deg)) scale(2.4);opacity:0}70%{transform:var(--rot,rotate(10deg)) scale(.94)}100%{transform:var(--rot,rotate(10deg)) scale(1)}}
+/* ticket */
+.ticket{display:flex;background:var(--card2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ticket .l{flex:1;padding:12px 16px;border-right:2px dashed var(--line)}
+.ticket .l i{font:600 8px/1 'JetBrains Mono';letter-spacing:.2em;color:var(--mut);font-style:normal}
+.ticket .l b{display:block;font:700 24px/1.3 'JetBrains Mono';letter-spacing:.06em}
+.ticket .r{width:92px;display:flex;align-items:center;justify-content:center;text-align:center;font:600 7.5px/1.6 'JetBrains Mono';letter-spacing:.13em;color:var(--mut);background:repeating-linear-gradient(90deg,transparent 0 3px,rgba(128,118,100,.12) 3px 4px)}
+/* buttons */
+.btn{text-align:center;font-family:'Anton';font-size:16px;letter-spacing:.05em;padding:15px 10px 13px;border-radius:10px}
+.btn.hot{background:var(--flame);color:#190b02;box-shadow:0 8px 28px rgba(255,77,0,.35)}
+.btn.ghost{border:1.5px solid var(--line);color:var(--mut);font-size:14px;padding-top:16px}
+.btn.cold{background:var(--morgue);color:#0c1822}
+/* heat arc */
+.heat{position:relative;margin:10px auto 0;width:220px;height:120px}
+.arcbg{stroke:var(--line);stroke-width:12;fill:none;stroke-linecap:round}
+.arc{stroke:url(#g1);stroke-width:12;fill:none;stroke-linecap:round;filter:drop-shadow(0 0 12px rgba(255,77,0,.55))}
+.heat .val{position:absolute;left:0;right:0;top:46px;text-align:center}
+.heat .val b{font-family:'Anton';font-size:40px;font-weight:400}
+.heat .val i{display:block;font:600 8.5px/1 'JetBrains Mono';letter-spacing:.22em;color:var(--mut);font-style:normal;margin-top:4px}
+/* nav */
+.nav{flex:none;display:flex;justify-content:space-around;padding:12px 10px 24px;border-top:1px solid var(--line);background:var(--navbg)}
+.nav i{font:600 8.5px/1 'JetBrains Mono';letter-spacing:.13em;color:var(--faint);font-style:normal;display:flex;flex-direction:column;align-items:center;gap:5px}
+.nav i.on{color:var(--flame)}
+.nav b{font-family:'Anton';font-size:14px;font-weight:400}
+/* offense tags */
+.offense{display:flex;gap:7px;flex-wrap:wrap}
+.off{font:700 8.5px/1 'JetBrains Mono';letter-spacing:.12em;border:1.5px solid;border-radius:3px;padding:5px 8px;transform:rotate(-1deg)}
+.off:nth-child(2n){transform:rotate(1.2deg)}
+/* mugshot */
+.mug{display:flex;flex-direction:column;align-items:center;width:74px}
+.mug .ph{width:62px;height:62px;border-radius:8px;position:relative;display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(0deg,#e7dcc6 0 11px,#dccfb5 11px 13px)}
+.mug .face{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Anton';font-size:16px;color:#fff}
+.mug .ring{position:absolute;inset:-3.5px;border-radius:11px;border:3px solid}
+.mug .plate{margin-top:-7px;z-index:2;background:var(--paperink);color:var(--paper)}
+body.light .mug .plate{background:#181410;color:#F2EAD9}
+.mug .plate{font:600 7.5px/1 'JetBrains Mono';letter-spacing:.05em;padding:4px 6px;border-radius:2px}
+.mug .st{font:700 7.5px/1 'JetBrains Mono';letter-spacing:.08em;margin-top:5px}
+/* front-page card */
+.front{background:var(--card);border:1.5px solid var(--ink);border-radius:6px;box-shadow:5px 6px 0 rgba(0,0,0,.55);padding:15px 16px 11px;position:relative}
+body.light .front{box-shadow:5px 6px 0 rgba(24,20,16,.85)}
+.front .mh{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:9px}
+.front .mh b{font-family:'Anton';font-size:14px;letter-spacing:.04em}
+.front .mh span{font:600 7.5px/1 'JetBrains Mono';letter-spacing:.15em;color:var(--mut)}
+.byline{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.byline .av{width:29px;height:29px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Anton';font-size:12px}
+.byline b{font-size:12px;font-weight:700}
+.byline i{font:600 8.5px/1.5 'JetBrains Mono';color:var(--mut);font-style:normal;letter-spacing:.06em}
+.kchip{margin-left:auto;font:700 8px/1 'JetBrains Mono';letter-spacing:.13em;border:1.5px solid;border-radius:3px;padding:4px 7px}
+.front h2{font-family:'Anton';font-size:23px;line-height:1.04;margin:2px 0 7px}
+.front .deck{font-family:'Fraunces';font-style:italic;font-weight:350;font-size:12.5px;color:var(--mut);line-height:1.45;margin-bottom:8px}
+.front p{font-size:12.5px;line-height:1.55;color:var(--mut)}
+body.light .front p{color:#33291d}
+.front .foot{display:flex;align-items:flex-end;justify-content:space-between;border-top:1.5px dashed var(--line);margin-top:11px;padding-top:8px}
+.barc{display:flex;flex-direction:column;gap:3px}
+.barcode{width:104px;height:20px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 8px,var(--ink) 8px 11px,transparent 11px 13px)}
+.barc i{font:600 7px/1 'JetBrains Mono';letter-spacing:.1em;color:var(--mut);font-style:normal}
+.reacts{display:flex;gap:13px;align-items:center}
+.re{display:flex;gap:5px;align-items:center;font:700 11px/1 'JetBrains Mono'}
+.re svg{width:16px;height:16px}
+.re.lit{color:var(--flame)} .re.dim{color:var(--mut);font-weight:600}
+.secline{display:flex;align-items:center;gap:10px;font:700 9px/1 'JetBrains Mono';letter-spacing:.2em;color:var(--mut);margin:12px 0}
+.secline:before,.secline:after{content:"";flex:1;height:1px;background:var(--line)}
+/* inputs */
+.field{background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;font:500 13px/1 'Schibsted Grotesk';color:var(--mut);margin-bottom:10px}
+.field b{color:var(--ink);font-weight:500}
+/* code boxes */
+.codes{display:flex;gap:8px;justify-content:center}
+.cbox{width:46px;height:54px;border:2px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 22px/1 'JetBrains Mono';background:var(--card2)}
+.cbox.f{border-color:var(--flame);color:var(--flame)}
+/* settings rows */
+.setrow{display:flex;align-items:center;justify-content:space-between;padding:14px 2px;border-bottom:1px dashed var(--line)}
+.setrow b{font-size:13.5px;font-weight:600}
+.setrow i{font:600 9px/1.6 'JetBrains Mono';color:var(--mut);font-style:normal;display:block;letter-spacing:.06em}
+.sw{width:42px;height:24px;border-radius:99px;background:var(--flame);position:relative}
+.sw:after{content:"";position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:99px;background:#fff}
+.flame-i{width:16px;height:16px;display:inline-block;vertical-align:-3px}
+</style>
+</head>
+<body>
+
+<div class="bar0">
+  <b>cookd<i>.</i></b><span>HOT PRESS — full screen set</span>
+  <div class="toggle" onclick="document.body.classList.toggle('light');this.querySelector('em').textContent=document.body.classList.contains('light')?'NEWSPRINT ☀':'PRESS ROOM ☾'"><em style="font-style:normal">PRESS ROOM ☾</em> · TAP TO FLIP</div>
+</div>
+
+<svg width="0" height="0"><defs>
+  <linearGradient id="g1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FFC400"/><stop offset=".55" stop-color="#FF7A1A"/><stop offset="1" stop-color="#FF4D00"/></linearGradient>
+  <symbol id="fl" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c2 4.5 6 6.5 6 11a6 6 0 0 1-12 0c0-2 .8-3.6 2-5 .3 1.6 1 2.6 2 3-.5-3 .5-6.5 2-9z"/></symbol>
+</defs></svg>
+
+<div class="grid">
+
+<!-- ════════ 1 · THE ENTRANCE (CLI-gated signup) ════════ -->
+<div class="wrap"><span class="tag0">1 · the entrance — no email, terminal required</span>
+<div class="phone">
+  <div class="ticker"><span>&nbsp;EXTRA EXTRA&nbsp;&nbsp;★&nbsp;&nbsp;THE ONLY PAPER THAT PRINTS YOUR FAILURES&nbsp;&nbsp;★&nbsp;&nbsp;NO TERMINAL, NO ENTRY&nbsp;&nbsp;★&nbsp;&nbsp;EXTRA EXTRA&nbsp;&nbsp;★&nbsp;&nbsp;THE ONLY PAPER THAT PRINTS YOUR FAILURES&nbsp;&nbsp;★&nbsp;&nbsp;NO TERMINAL, NO ENTRY&nbsp;&nbsp;★&nbsp;</span></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="mast" style="font-size:50px;text-align:center">cookd<span class="dot">.</span></div>
+    <div class="aside" style="text-align:center;margin-top:4px">the daily paper of people who promptly<br>ran out of prompts.</div>
+    <div style="height:22px"></div>
+    <div class="kick" style="text-align:center">PRESS CREDENTIALS REQUIRED</div>
+
+    <div class="receipt">
+      <h4><span>RUN WHERE YOU CLAUDEMAX</span><span>COPY ⧉</span></h4>
+      <div style="font:700 14px/2.4 'JetBrains Mono'">$ npx cookd init</div>
+    </div>
+
+    <div class="secline" style="margin:14px 0 10px">ENTER YOUR PRESS CODE</div>
+    <div class="codes">
+      <div class="cbox f">7</div><div class="cbox f">F</div><div class="cbox f">2</div><div class="cbox">&nbsp;</div><div class="cbox">&nbsp;</div><div class="cbox">&nbsp;</div>
+    </div>
+
+    <div class="btn hot" style="margin-top:16px">PRESENT CREDENTIALS</div>
+    <div class="aside" style="text-align:center;font-size:11.5px;margin-top:14px">no email. no password. no tourists.<br>if you don’t have a terminal, this isn’t for you.</div>
+    <div class="mono" style="text-align:center;font-size:9px;color:var(--faint);margin-top:10px;letter-spacing:.1em">YOUR CODE & PROMPTS NEVER LEAVE YOUR MACHINE — <u>THE AFFIDAVIT</u></div>
+  </div>
+</div></div>
+
+<!-- ════════ 2 · CLAIM YOUR BYLINE ════════ -->
+<div class="wrap"><span class="tag0">2 · onboarding — “claim your byline” (handle)</span>
+<div class="phone">
+  <div class="mhead"><div class="mast">cookd<span class="dot">.</span></div><div class="pill warm">LAST STEP</div></div>
+  <div class="body">
+    <div class="kick">CREDENTIALS VERIFIED · MACHINE DEPUTIZED ✓</div>
+    <div class="h1">CLAIM YOUR<br><span class="hot">BYLINE.</span></div>
+    <div class="aside">every reporter needs a name to ruin. choose carefully — it goes on every front page you earn.</div>
+
+    <div style="display:flex;justify-content:center;margin:18px 0 6px">
+      <div class="mug" style="width:96px">
+        <div class="ph" style="width:84px;height:84px"><div class="ring" style="border-color:var(--stamp)"></div><div class="face" style="width:54px;height:54px;font-size:23px;background:var(--claude)">K</div></div>
+        <div class="plate">Nº 0610-KNWR</div>
+      </div>
+    </div>
+
+    <div class="field" style="font:700 16px/1 'JetBrains Mono';color:var(--ink);text-align:center">@kanwar</div>
+    <div class="mono" style="text-align:center;font-size:9.5px;color:#10A37F;letter-spacing:.1em;margin-top:2px">AVAILABLE — TRAGIC FOR YOU ✓</div>
+
+    <div class="receipt" style="margin-top:16px">
+      <h4><span>YOUR FIELD REPORTER</span><span>LIVE</span></h4>
+      <div class="row"><span>MACHINE</span><b>DESKTOP-KANWAR</b></div>
+      <div class="row"><span>WATCHING</span><b>CLAUDE CODE · ~/.claude</b></div>
+      <div class="row"><span>FIRST READING</span><b class="hotv">64% — ALREADY COOKING</b></div>
+    </div>
+
+    <div class="btn hot" style="margin-top:14px">PUT IT IN PRINT</div>
+  </div>
+  <div class="nav" style="justify-content:center;gap:8px">
+    <i>●</i><i style="color:var(--flame)">●</i>
+  </div>
+</div></div>
+
+<!-- ════════ 3 · YOU — COOKED ════════ -->
+<div class="wrap"><span class="tag0">3 · YOU / tonight — cooked (the hero)</span>
+<div class="phone">
+  <div class="ticker"><span>&nbsp;BREAKING&nbsp;&nbsp;★&nbsp;&nbsp;@KANWAR HITS 100% — AGAIN&nbsp;&nbsp;★&nbsp;&nbsp;38,400,000 TOKENS PRONOUNCED DEAD AT 21:14&nbsp;&nbsp;★&nbsp;&nbsp;OPUS UNAVAILABLE FOR COMMENT&nbsp;&nbsp;★&nbsp;&nbsp;BREAKING&nbsp;&nbsp;★&nbsp;&nbsp;@KANWAR HITS 100% — AGAIN&nbsp;&nbsp;★&nbsp;&nbsp;38,400,000 TOKENS PRONOUNCED DEAD AT 21:14&nbsp;&nbsp;★&nbsp;&nbsp;OPUS UNAVAILABLE FOR COMMENT&nbsp;&nbsp;★&nbsp;</span></div>
+  <div class="mhead"><div class="mast">cookd<span class="dot">.</span></div><div class="pill hot">COOKED · 100%</div></div>
+  <div class="body">
+    <div class="kick">TONIGHT’S TOP STORY</div>
+    <div class="h1">YOU DID IT<br><span class="hot">AGAIN,</span> CHEF.</div>
+    <div class="heat">
+      <svg viewBox="0 0 220 120"><path class="arcbg" d="M22 108 A 88 88 0 0 1 198 108"/><path class="arc" d="M22 108 A 88 88 0 0 1 198 108"/></svg>
+      <div class="val"><b>100%</b><i>HEAT INDEX — 5H WINDOW</i></div>
+    </div>
+    <div class="stampr" style="position:absolute;top:188px;right:26px;--rot:rotate(12deg);transform:rotate(12deg);font-size:23px;padding:5px 13px 4px">COOKED</div>
+
+    <div class="offense" style="margin:8px 0 0">
+      <div class="off" style="border-color:var(--flame);color:var(--flame)">ARSONIST</div>
+      <div class="off" style="border-color:#9C7BD4;color:#9C7BD4">NIGHT OWL</div>
+      <div class="off" style="border-color:var(--stamp);color:var(--stamp)">CTX HOARDER</div>
+      <div class="off" style="border-color:var(--mut);color:var(--mut)">+4 MORE</div>
+    </div>
+
+    <div class="receipt" style="margin-top:12px">
+      <h4><span>THE DAMAGE</span><span>#0610-KNWR</span></h4>
+      <div class="row"><span>TOKENS TORCHED</span><b class="hotv">38,400,000</b></div>
+      <div class="row"><span>TIME TO COOK</span><b>3H 12M</b></div>
+      <div class="row"><span>CHIEF ENABLER</span><b>OPUS 4.8</b></div>
+      <div class="total"><span>VERDICT</span><span class="hotv">ABSOLUTELY COOKED</span></div>
+    </div>
+
+    <div class="ticket" style="margin-top:11px">
+      <div class="l"><i>YOUR SENTENCE ENDS IN</i><b>01:47:26</b></div>
+      <div class="r">ADMIT<br>ONE<br>FLOP</div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <div class="btn hot" style="flex:1.4">RUIN ME</div>
+      <div class="btn ghost" style="flex:1">THE PAPER</div>
+    </div>
+  </div>
+  <div class="nav">
+    <i class="on"><b>YOU</b>tonight</i><i><b>PAPER</b>the feed</i><i><b>ROAST</b>main event</i><i><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 4 · YOU — COOKING ════════ -->
+<div class="wrap"><span class="tag0">4 · YOU / tonight — still cooking (64%)</span>
+<div class="phone">
+  <div class="ticker" style="background:var(--stamp);color:#241c00"><span>&nbsp;DEVELOPING STORY&nbsp;&nbsp;★&nbsp;&nbsp;@KANWAR AT 64% AND CLIMBING&nbsp;&nbsp;★&nbsp;&nbsp;SOURCES SAY “ONE MORE FIX”&nbsp;&nbsp;★&nbsp;&nbsp;DEVELOPING STORY&nbsp;&nbsp;★&nbsp;&nbsp;@KANWAR AT 64% AND CLIMBING&nbsp;&nbsp;★&nbsp;&nbsp;SOURCES SAY “ONE MORE FIX”&nbsp;&nbsp;★&nbsp;</span></div>
+  <div class="mhead"><div class="mast">cookd<span class="dot">.</span></div><div class="pill warm">COOKING · 64%</div></div>
+  <div class="body">
+    <div class="kick">DEVELOPING STORY</div>
+    <div class="h1">STILL GOT<br><span style="color:var(--stamp)">GAS.</span></div>
+    <div class="aside">24.6M down, 13.8M to go. the print room is warming up the COOKED stamp — it’s very confident.</div>
+    <div class="heat">
+      <svg viewBox="0 0 220 120"><path class="arcbg" d="M22 108 A 88 88 0 0 1 198 108"/><path class="arc" style="stroke-dasharray:276;stroke-dashoffset:99" d="M22 108 A 88 88 0 0 1 198 108"/></svg>
+      <div class="val"><b>64%</b><i>HEAT INDEX — 5H WINDOW</i></div>
+    </div>
+
+    <div class="receipt" style="margin-top:14px">
+      <h4><span>RUNNING TAB</span><span>LIVE</span></h4>
+      <div class="row"><span>TORCHED SO FAR</span><b class="hotv">24,576,000</b></div>
+      <div class="row"><span>BURN RATE</span><b>11.2M / HR</b></div>
+      <div class="row"><span>EST. COOKED BY</span><b>22:31</b></div>
+    </div>
+
+    <div class="aside" style="font-size:12.5px;margin-top:14px">the front page unlocks when you’re cooked.<br>go on. we’ll wait. we always do.</div>
+    <div class="btn ghost" style="margin-top:8px">PEEK AT THE PAPER (READ-ONLY)</div>
+  </div>
+  <div class="nav">
+    <i class="on"><b>YOU</b>tonight</i><i><b>PAPER</b>the feed</i><i><b>ROAST</b>main event</i><i><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 5 · PRESS CLOSED ════════ -->
+<div class="wrap"><span class="tag0">5 · lock — “press closed” (reset hit)</span>
+<div class="phone">
+  <div class="ticker" style="background:var(--morgue);color:#0c1822"><span>&nbsp;FINAL EDITION&nbsp;&nbsp;★&nbsp;&nbsp;WINDOW RESET AT 04:23&nbsp;&nbsp;★&nbsp;&nbsp;ALL REPORTERS SENT HOME&nbsp;&nbsp;★&nbsp;&nbsp;GO SHIP SOMETHING&nbsp;&nbsp;★&nbsp;&nbsp;FINAL EDITION&nbsp;&nbsp;★&nbsp;&nbsp;WINDOW RESET AT 04:23&nbsp;&nbsp;★&nbsp;&nbsp;ALL REPORTERS SENT HOME&nbsp;&nbsp;★&nbsp;&nbsp;GO SHIP SOMETHING&nbsp;&nbsp;★&nbsp;</span></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+    <div class="stampr" style="--rot:rotate(-7deg);transform:rotate(-7deg);border-color:var(--morgue);color:var(--morgue);font-size:34px;padding:10px 22px 8px;margin:0 auto">PRESS CLOSED</div>
+    <div style="height:26px"></div>
+    <div class="h1">BACK TO<br>WORK, <span class="cold">CHEF.</span></div>
+    <div class="aside" style="text-align:center">your window is back. the paper is not.<br>this door only opens when claude slams his.</div>
+    <div style="height:22px"></div>
+    <div class="ticket" style="text-align:left">
+      <div class="l"><i>NEXT EDITION PRINTS</i><b style="font-size:17px">WHEN YOU’RE COOKED</b></div>
+      <div class="r">NO<br>REFUNDS</div>
+    </div>
+    <div style="height:14px"></div>
+    <div class="aside" style="font-size:12px;text-align:center">deadline’s back, and so are you. we’ll keep the stamp warm, @kanwar.</div>
+    <div style="height:18px"></div>
+    <div class="mono" style="font-size:10px;color:var(--faint)"><u>sign out</u> · <u>manage devices</u></div>
+  </div>
+</div></div>
+
+<!-- ════════ 6 · PAPER (FEED) ════════ -->
+<div class="wrap"><span class="tag0">6 · PAPER / the feed — “today’s paper”</span>
+<div class="phone">
+  <div class="mhead" style="border-bottom:2.5px solid var(--ink);padding-bottom:10px">
+    <div>
+      <div class="mono" style="font-size:8px;letter-spacing:.18em;color:var(--mut);margin-bottom:6px">VOL. 001 — TUES, JUN 10 · PRICE: YOUR DIGNITY</div>
+      <div class="mast" style="font-size:30px">the cookd press</div>
+      <div class="fra" style="font-size:12px;color:var(--mut)">— all the flops fit to print</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="secline">COOKING RIGHT NOW</div>
+    <div style="display:flex;gap:13px;margin-bottom:4px">
+      <div class="mug"><div class="ph"><div class="ring" style="border-color:var(--flame)"></div><div class="face" style="background:var(--claude)">R</div></div><div class="plate">@ria_ships</div><div class="st" style="color:var(--flame)">100% COOKED</div></div>
+      <div class="mug"><div class="ph"><div class="ring" style="border-color:#FF9E2C"></div><div class="face" style="background:var(--codex)">D</div></div><div class="plate">@dev_anand</div><div class="st" style="color:#c97a16">64%</div></div>
+      <div class="mug"><div class="ph"><div class="ring" style="border-color:var(--morgue)"></div><div class="face" style="background:var(--gemini)">A</div></div><div class="plate">@arjun_idle</div><div class="st" style="color:var(--morgue)">11% COUCH</div></div>
+      <div class="mug"><div class="ph"><div class="ring" style="border-color:#FF9E2C"></div><div class="face" style="background:#9C7BD4">M</div></div><div class="plate">@meera</div><div class="st" style="color:#c97a16">78%</div></div>
+    </div>
+
+    <div class="secline">FRONT PAGE</div>
+    <div class="front">
+      <div class="mh"><b>THE COOKD PRESS</b><span>ROAST · 2 MIN AGO</span></div>
+      <div class="byline">
+        <div class="av" style="background:var(--claude)">R</div>
+        <div><b>@ria_ships</b><br><i>arsonist · night owl · via claude</i></div>
+        <div class="kchip" style="color:var(--flame);border-color:var(--flame)">ROAST</div>
+      </div>
+      <h2>LOCAL FOUNDER SPEEDRUNS HER OWN FUNERAL</h2>
+      <div class="deck">— burned a seed round of tokens before standup, sources confirm.</div>
+      <p>21M tokens in 58 minutes. You didn’t code, you rage-prompted. Sonnet did the work, you’ll do the LinkedIn post.</p>
+      <div class="stampr" style="position:absolute;top:46px;right:12px;--rot:rotate(-9deg);transform:rotate(-9deg);border-color:var(--flame);color:var(--flame);font-size:14px;padding:4px 9px 3px;border-width:3px">CERTIFIED FLOP</div>
+      <div class="foot">
+        <div class="barc"><div class="barcode"></div><i>21,000,000 TOKENS · 58 MIN · 100%</i></div>
+        <div class="reacts">
+          <div class="re lit"><svg><use href="#fl"/></svg>47</div>
+          <div class="re dim">✎ 12</div>
+          <div class="re dim">✂</div>
+          <div class="re dim">↗</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="front" style="margin-top:12px">
+      <div class="byline" style="margin-bottom:6px">
+        <div class="av" style="background:var(--gemini)">A</div>
+        <div><b>@arjun_idle</b><br><i>haiku sipper · via gemini</i></div>
+        <div class="kchip" style="color:var(--morgue);border-color:var(--morgue)">FLEX</div>
+      </div>
+      <h2 style="font-size:17px">“11% AND AT PEACE,” CLAIMS MAN SHIPPING NOTHING</h2>
+      <div class="foot" style="margin-top:8px">
+        <div class="barc"><i>4,200,000 TOKENS · COUCH CERTIFIED</i></div>
+        <div class="reacts"><div class="re dim"><svg><use href="#fl"/></svg>9</div><div class="re dim">✎ 3</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <i><b>YOU</b>tonight</i><i class="on"><b>PAPER</b>the feed</i><i><b>ROAST</b>main event</i><i><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 7 · ROAST (MAIN EVENT) ════════ -->
+<div class="wrap"><span class="tag0">7 · ROAST / main event — the column prints</span>
+<div class="phone">
+  <div class="mhead"><div class="mast">the main event</div><div class="pill hot">FRESH OFF THE PRESS</div></div>
+  <div class="body">
+    <div class="aside" style="margin-top:2px">the editor read your logs. the column wrote itself. honestly, it had material.</div>
+
+    <div class="front" style="margin-top:12px">
+      <div class="mh"><b>THE COOKD PRESS</b><span>OPINION — SCATHING</span></div>
+      <div class="kick" style="margin:2px 0 6px">EDITOR’S COLUMN · TONIGHT’S SUBJECT: @KANWAR</div>
+      <h2 style="font-size:26px">820 MILLION TOKENS AND STILL NO OFF SWITCH</h2>
+      <div class="deck">— a study in commitment, if not in judgment.</div>
+      <p>38M tokens in 3 hours and you read exactly zero diffs. You weren’t building — you were pulling a slot-machine lever yelling “accept all” until it stopped paying. Now you refresh the usage page like it’ll reset out of pity. It won’t. It never does.</p>
+      <div class="stampr" style="position:absolute;top:54px;right:10px;--rot:rotate(8deg);transform:rotate(8deg);font-size:15px;padding:4px 10px 3px;border-width:3px">EXCLUSIVE</div>
+      <div class="foot">
+        <div class="barc"><div class="barcode"></div><i>38,400,000 · 3H12M · OPUS 4.8 · 100%</i></div>
+        <div class="reacts"><div class="re dim fra" style="font-size:10px">— the editor</div></div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:center;gap:5px;margin:12px 0 2px">
+      <div style="width:18px;height:5px;border-radius:99px;background:var(--flame)"></div>
+      <div style="width:6px;height:5px;border-radius:99px;background:var(--line)"></div>
+      <div style="width:6px;height:5px;border-radius:99px;background:var(--line)"></div>
+    </div>
+    <div class="mono" style="text-align:center;font-size:8.5px;letter-spacing:.18em;color:var(--faint)">3 CARD SKINS — SWIPE</div>
+
+    <div class="btn hot" style="margin-top:12px">PRINT IT TO THE PAPER</div>
+    <div style="display:flex;gap:10px;margin-top:9px">
+      <div class="btn ghost" style="flex:1">ANOTHER TAKE</div>
+      <div class="btn ghost" style="flex:1">SYNDICATE IT ↗</div>
+    </div>
+  </div>
+  <div class="nav">
+    <i><b>YOU</b>tonight</i><i><b>PAPER</b>the feed</i><i class="on"><b>ROAST</b>main event</i><i><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 8 · RAP SHEET (PROFILE) ════════ -->
+<div class="wrap"><span class="tag0">8 · RAP / sheet — profile + settings</span>
+<div class="phone">
+  <div class="mhead"><div class="mast">the rap sheet</div><div class="pill warm">FILE Nº 0001</div></div>
+  <div class="body">
+    <div style="display:flex;gap:14px;align-items:center;margin-top:4px">
+      <div class="mug" style="width:86px">
+        <div class="ph" style="width:78px;height:78px"><div class="ring" style="border-color:var(--flame)"></div><div class="face" style="width:50px;height:50px;font-size:21px;background:var(--claude)">K</div></div>
+        <div class="plate">Nº 0610-KNWR</div>
+      </div>
+      <div>
+        <div class="anton" style="font-size:25px">@KANWAR</div>
+        <div class="fra" style="font-size:12.5px;color:var(--mut)">repeat offender · 27 days at large</div>
+        <div class="mono" style="font-size:9.5px;color:var(--mut);margin-top:6px;letter-spacing:.08em">COOKED 5× THIS WEEK · A RECORD</div>
+      </div>
+    </div>
+
+    <div class="secline">PRIOR OFFENSES</div>
+    <div class="offense">
+      <div class="off" style="border-color:var(--flame);color:var(--flame)">TOKEN ARSONIST</div>
+      <div class="off" style="border-color:#9C7BD4;color:#9C7BD4">NIGHT OWL</div>
+      <div class="off" style="border-color:var(--stamp);color:var(--stamp)">CTX HOARDER</div>
+      <div class="off" style="border-color:#10A37F;color:#10A37F">AGENT OVERLORD</div>
+      <div class="off" style="border-color:var(--mut);color:var(--mut)">GRASS: UNTOUCHED</div>
+    </div>
+
+    <div class="secline">THE ENGINEER CARD</div>
+    <div style="background:#14110e;border:1.5px solid var(--stamp);border-radius:10px;padding:15px 16px 11px;position:relative">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="mono" style="font-size:8.5px;letter-spacing:.22em;color:var(--stamp)">CLAUDE ENGINEER CARD</span>
+        <svg class="flame-i" style="color:var(--flame)"><use href="#fl"/></svg>
+      </div>
+      <div class="anton" style="font-size:21px;color:#F2EAD9;margin:9px 0 2px">KANWAR KELIDE</div>
+      <div class="mono" style="font-size:9px;color:#8d8377;letter-spacing:.14em">820M LIFETIME · 4,744 PROMPTS · SHIPS AT 10PM</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:11px">
+        <div class="barcode" style="background:repeating-linear-gradient(90deg,#F2EAD9 0 2px,transparent 2px 4px,#F2EAD9 4px 5px,transparent 5px 8px,#F2EAD9 8px 11px,transparent 11px 13px)"></div>
+        <span class="mono" style="font-size:8px;color:var(--stamp);letter-spacing:.1em">VERIFIED BY USAGE, NOT VIBES</span>
+      </div>
+    </div>
+
+    <div class="secline">THE FINE PRINT</div>
+    <div class="setrow"><div><b>dark mode</b><i>PRESS ROOM ↔ NEWSPRINT</i></div><div class="sw"></div></div>
+    <div class="setrow"><div><b>my devices</b><i>1 FIELD REPORTER ACTIVE</i></div><span class="mono" style="color:var(--mut)">›</span></div>
+    <div class="setrow"><div><b>sign out</b><i>FLEE THE SCENE</i></div><span class="mono" style="color:var(--mut)">›</span></div>
+    <div class="setrow" style="border:0"><div><b style="color:var(--flame)">burn my file</b><i>DELETE ACCOUNT — EVERYTHING, FOREVER</i></div><span class="mono" style="color:var(--flame)">›</span></div>
+  </div>
+  <div class="nav">
+    <i><b>YOU</b>tonight</i><i><b>PAPER</b>the feed</i><i><b>ROAST</b>main event</i><i class="on"><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 9 · PUBLIC RAP SHEET ════════ -->
+<div class="wrap"><span class="tag0">9 · someone else’s rap sheet (pushed in PAPER stack)</span>
+<div class="phone">
+  <div class="mhead">
+    <div style="display:flex;align-items:baseline;gap:10px"><span class="mono" style="color:var(--mut);font-size:14px">‹</span><div><div class="mono" style="font-size:7.5px;letter-spacing:.16em;color:var(--faint)">BACK TO THE PAPER</div><div class="mast" style="font-size:20px">the rap sheet</div></div></div>
+    <div class="pill hot">AT LARGE · 100%</div>
+  </div>
+  <div class="body">
+    <div style="display:flex;gap:14px;align-items:center;margin-top:4px">
+      <div class="mug" style="width:86px">
+        <div class="ph" style="width:78px;height:78px"><div class="ring" style="border-color:var(--flame)"></div><div class="face" style="width:50px;height:50px;font-size:21px;background:var(--claude)">R</div></div>
+        <div class="plate">Nº 0610-RIA</div>
+      </div>
+      <div style="flex:1">
+        <div class="anton" style="font-size:25px">@RIA_SHIPS</div>
+        <div class="fra" style="font-size:12.5px;color:var(--mut)">fastest cook of the season · 41 days at large</div>
+        <div class="mono" style="font-size:9.5px;color:var(--flame);margin-top:6px;letter-spacing:.08em">CURRENTLY: COOKED · BACK AT 04:23</div>
+      </div>
+    </div>
+
+    <div class="btn hot" style="margin-top:14px;font-size:14px">SUBSCRIBE TO HER DOWNFALL</div>
+
+    <div class="secline">PRIOR OFFENSES</div>
+    <div class="offense">
+      <div class="off" style="border-color:var(--flame);color:var(--flame)">SPEEDRUN — 58 MIN</div>
+      <div class="off" style="border-color:#10A37F;color:#10A37F">AGENT OVERLORD 31%</div>
+      <div class="off" style="border-color:#9C7BD4;color:#9C7BD4">OPUS ARISTOCRAT</div>
+    </div>
+
+    <div class="secline">CAREER STATISTICS</div>
+    <div class="receipt">
+      <h4><span>LIFETIME RECORD</span><span>PUBLIC FILE</span></h4>
+      <div class="row"><span>TOKENS TORCHED</span><b class="hotv">412,000,000</b></div>
+      <div class="row"><span>TIMES COOKED</span><b>23</b></div>
+      <div class="row"><span>FASTEST COOK</span><b>58 MIN (REGIONAL BEST)</b></div>
+      <div class="row"><span>DIFFS READ, ALL-TIME</span><b>RUMORED</b></div>
+    </div>
+
+    <div class="secline">RECENT FRONT PAGES</div>
+    <div class="front" style="padding:12px 14px">
+      <div class="byline" style="margin:0">
+        <div class="kchip" style="color:var(--flame);border-color:var(--flame);margin-left:0">ROAST</div>
+        <b style="font-family:'Anton';font-size:14px;font-weight:400">&nbsp;SPEEDRAN HER OWN FUNERAL</b>
+        <div class="reacts" style="margin-left:auto"><div class="re lit"><svg><use href="#fl"/></svg>47</div></div>
+      </div>
+    </div>
+    <div class="front" style="padding:12px 14px;margin-top:9px">
+      <div class="byline" style="margin:0">
+        <div class="kchip" style="color:var(--stamp);border-color:var(--stamp);margin-left:0">COOKED</div>
+        <b style="font-family:'Anton';font-size:14px;font-weight:400">&nbsp;COOKED BEFORE LUNCH. AGAIN.</b>
+        <div class="reacts" style="margin-left:auto"><div class="re dim"><svg><use href="#fl"/></svg>21</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <i><b>YOU</b>tonight</i><i class="on"><b>PAPER</b>the feed</i><i><b>ROAST</b>main event</i><i><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 10 · THE SUNDAY EDITION (WRAPPED) ════════ -->
+<div class="wrap"><span class="tag0">10 · wrapped — “the sunday edition” (share card)</span>
+<div class="phone">
+  <div class="mhead" style="border-bottom:2.5px solid var(--ink);padding-bottom:10px">
+    <div>
+      <div class="mono" style="font-size:8px;letter-spacing:.18em;color:var(--mut);margin-bottom:6px">SPECIAL ISSUE — WEEK 24, 2026</div>
+      <div class="mast" style="font-size:28px">the sunday edition</div>
+      <div class="fra" style="font-size:12px;color:var(--mut)">— your week, reviewed harshly</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="front" style="margin-top:12px">
+      <div class="mh"><b>THE COOKD PRESS</b><span>WEEK IN REVIEW</span></div>
+      <div class="kick" style="margin:0 0 6px">SUBJECT: @KANWAR · JUN 3 – JUN 10</div>
+      <h2 style="font-size:30px">A WEEK IN <span style="color:var(--flame)">FLAMES.</span></h2>
+      <div class="deck">— five cookings in seven days. the stamp is exhausted.</div>
+
+      <div style="display:flex;justify-content:space-between;margin:10px 0 4px">
+        <div><div class="anton" style="font-size:23px;color:var(--flame)">142M</div><div class="mono" style="font-size:7.5px;letter-spacing:.16em;color:var(--mut)">TOKENS TORCHED</div></div>
+        <div><div class="anton" style="font-size:23px">5×</div><div class="mono" style="font-size:7.5px;letter-spacing:.16em;color:var(--mut)">TIMES COOKED</div></div>
+        <div><div class="anton" style="font-size:23px">96M</div><div class="mono" style="font-size:7.5px;letter-spacing:.16em;color:var(--mut)">WORST DAY</div></div>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;gap:6px;height:62px;margin:10px 0 4px;border-bottom:1.5px solid var(--line);padding-bottom:0">
+        <div style="flex:1;height:34%;background:var(--stamp);border-radius:3px 3px 0 0"></div>
+        <div style="flex:1;height:55%;background:#FF9E2C;border-radius:3px 3px 0 0"></div>
+        <div style="flex:1;height:100%;background:var(--flame);border-radius:3px 3px 0 0;box-shadow:0 0 18px rgba(255,77,0,.5)"></div>
+        <div style="flex:1;height:25%;background:var(--line);border-radius:3px 3px 0 0"></div>
+        <div style="flex:1;height:64%;background:#FF9E2C;border-radius:3px 3px 0 0"></div>
+        <div style="flex:1;height:78%;background:var(--flame);border-radius:3px 3px 0 0"></div>
+        <div style="flex:1;height:48%;background:var(--stamp);border-radius:3px 3px 0 0"></div>
+      </div>
+      <div class="mono" style="display:flex;justify-content:space-between;font-size:7px;letter-spacing:.1em;color:var(--faint)"><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span><span>MON</span><span>TUE</span></div>
+
+      <div class="stampr" style="position:absolute;top:64px;right:10px;--rot:rotate(9deg);transform:rotate(9deg);font-size:13px;padding:4px 9px 3px;border-width:3px">FREQUENT FLYER</div>
+
+      <div class="foot">
+        <div class="barc"><div class="barcode"></div><i>WK24 · 142,316,082 · 5 COOKINGS · PEAK FRI</i></div>
+        <div class="reacts"><div class="re dim fra" style="font-size:10px">cookd.</div></div>
+      </div>
+    </div>
+
+    <div class="receipt" style="margin-top:12px">
+      <h4><span>EDITOR’S WEEKLY NOTES</span><span>WK24</span></h4>
+      <div class="row"><span>NIGHT OWL RATE</span><b>71% AFTER 9PM</b></div>
+      <div class="row"><span>CRAWL-BACK SPEED</span><b class="hotv">8 MIN AVG</b></div>
+      <div class="row"><span>LOYALTY</span><b>CLAUDE 62 · CODEX 26 · GEM 12</b></div>
+    </div>
+
+    <div class="btn hot" style="margin-top:12px">SHARE THE SHAME</div>
+  </div>
+  <div class="nav">
+    <i><b>YOU</b>tonight</i><i><b>PAPER</b>the feed</i><i><b>ROAST</b>main event</i><i class="on"><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 11 · LETTERS TO THE EDITOR (comments + threads) ════════ -->
+<div class="wrap"><span class="tag0">11 · comments — “letters to the editor” (threaded)</span>
+<div class="phone">
+  <div class="mhead" style="align-items:baseline">
+    <div style="display:flex;align-items:baseline;gap:10px"><span class="mono" style="color:var(--mut)">‹</span><div class="mast" style="font-size:19px">letters to the editor</div></div>
+    <div class="pill warm">14 LETTERS</div>
+  </div>
+  <div class="body" style="display:flex;flex-direction:column">
+    <!-- compact subject card -->
+    <div class="front" style="padding:12px 14px">
+      <div class="byline" style="margin-bottom:5px">
+        <div class="av" style="background:var(--claude);width:24px;height:24px;font-size:10px">R</div>
+        <b style="font-size:11px">@ria_ships</b>
+        <div class="kchip" style="color:var(--flame);border-color:var(--flame)">ROAST</div>
+      </div>
+      <h2 style="font-size:16px;margin:0 0 4px">LOCAL FOUNDER SPEEDRUNS HER OWN FUNERAL</h2>
+      <div class="foot" style="margin-top:7px;padding-top:7px">
+        <div class="barc"><i>21M · 58 MIN · 100%</i></div>
+        <div class="reacts"><div class="re lit"><svg><use href="#fl"/></svg>47</div><div class="re dim">✂</div><div class="re dim">↗</div></div>
+      </div>
+    </div>
+
+    <div class="secline" style="margin:12px 0 8px">THE PILE-ON</div>
+    <div style="flex:1;overflow:hidden">
+
+      <!-- letter + thread -->
+      <div style="display:flex;gap:10px;padding:8px 0">
+        <div class="byline" style="margin:0"><div class="av" style="background:var(--codex);width:28px;height:28px;font-size:11px">D</div></div>
+        <div style="flex:1">
+          <div style="display:flex;gap:8px;align-items:baseline"><b style="font-size:12px">@dev_anand</b><i class="mono" style="font-size:8.5px;color:var(--faint)">4M</i></div>
+          <div style="font-size:12.5px;line-height:1.5;color:var(--mut);margin-top:3px">58 minutes?? my CI takes longer to fail. genuinely impressive work, sincerely, a rival.</div>
+          <div class="mono" style="font-size:9px;color:var(--faint);margin-top:5px;display:flex;gap:14px"><span style="color:var(--flame)">▲ 23</span><span>REPLY</span></div>
+        </div>
+      </div>
+      <!-- replies (one-level thread) -->
+      <div style="margin-left:38px;border-left:2px solid var(--line);padding-left:12px">
+        <div style="display:flex;gap:10px;padding:7px 0">
+          <div class="av" style="background:var(--claude);width:24px;height:24px;font-size:10px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Anton'">R</div>
+          <div style="flex:1">
+            <div style="display:flex;gap:8px;align-items:baseline"><b style="font-size:11.5px">@ria_ships</b><span class="kchip" style="margin:0;color:var(--stamp);border-color:var(--stamp);font-size:6.5px;padding:2px 5px">THE ACCUSED</span><i class="mono" style="font-size:8.5px;color:var(--faint)">3M</i></div>
+            <div style="font-size:12px;line-height:1.5;color:var(--mut);margin-top:3px">my CI fails with dignity. i fail with VELOCITY. we are not the same.</div>
+            <div class="mono" style="font-size:9px;color:var(--faint);margin-top:5px;display:flex;gap:14px"><span style="color:var(--flame)">▲ 41</span><span>REPLY</span></div>
+            <!-- depth 3 -->
+            <div style="margin-top:8px;border-left:2px solid var(--line);padding-left:11px">
+              <div style="display:flex;gap:9px;padding:4px 0">
+                <div class="av" style="background:var(--codex);width:21px;height:21px;font-size:9px;border-radius:5px;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Anton'">D</div>
+                <div style="flex:1">
+                  <div style="display:flex;gap:7px;align-items:baseline"><b style="font-size:11px">@dev_anand</b><i class="mono" style="font-size:8px;color:var(--faint)">2M</i></div>
+                  <div style="font-size:11.5px;line-height:1.5;color:var(--mut);margin-top:2px">velocity queen 👑 see you in tomorrow’s obituaries</div>
+                  <div class="mono" style="font-size:8.5px;color:var(--faint);margin-top:4px;display:flex;gap:12px"><span style="color:var(--flame)">▲ 17</span><span>REPLY</span></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:9px;padding:4px 0">
+                <div class="av" style="background:var(--claude);width:21px;height:21px;font-size:9px;border-radius:5px;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Anton'">R</div>
+                <div style="flex:1">
+                  <div style="display:flex;gap:7px;align-items:baseline"><b style="font-size:11px">@ria_ships</b><i class="mono" style="font-size:8px;color:var(--faint)">1M</i></div>
+                  <div style="font-size:11.5px;line-height:1.5;color:var(--mut);margin-top:2px">save me a column inch.</div>
+                  <div class="mono" style="font-size:8.5px;color:var(--faint);margin-top:4px;display:flex;gap:12px"><span>▲ 8</span><span style="color:var(--flame)">CONTINUE THE PILE-ON → 6 MORE</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;padding:7px 0">
+          <div class="av" style="background:#9C7BD4;width:24px;height:24px;font-size:10px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Anton'">M</div>
+          <div style="flex:1">
+            <div style="display:flex;gap:8px;align-items:baseline"><b style="font-size:11.5px">@meera.codes</b><i class="mono" style="font-size:8.5px;color:var(--faint)">2M</i></div>
+            <div style="font-size:12px;line-height:1.5;color:var(--mut);margin-top:3px">framing this reply. clipping it. printing it. putting it above my desk.</div>
+            <div class="mono" style="font-size:9px;color:var(--faint);margin-top:5px;display:flex;gap:14px"><span>▲ 12</span><span>REPLY</span></div>
+          </div>
+        </div>
+        <div class="mono" style="font-size:9.5px;letter-spacing:.12em;color:var(--flame);padding:6px 0 8px;font-weight:700">CONTINUE THE PILE-ON → 12 MORE REPLIES</div>
+      </div>
+
+      <!-- solo letter -->
+      <div style="display:flex;gap:10px;padding:10px 0 6px">
+        <div class="byline" style="margin:0"><div class="av" style="background:var(--gemini);width:28px;height:28px;font-size:11px">A</div></div>
+        <div style="flex:1">
+          <div style="display:flex;gap:8px;align-items:baseline"><b style="font-size:12px">@arjun_idle</b><i class="mono" style="font-size:8.5px;color:var(--faint)">1M</i></div>
+          <div style="font-size:12.5px;line-height:1.5;color:var(--mut);margin-top:3px">posting from 11% usage. some of us sip. 🍵</div>
+          <div class="mono" style="font-size:9px;color:var(--faint);margin-top:5px;display:flex;gap:14px"><span>▲ 3</span><span>REPLY</span><span style="color:var(--morgue)">COUCH DETECTED</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- compose -->
+    <div style="display:flex;gap:9px;align-items:center;padding:10px 0 12px;border-top:1.5px dashed var(--line)">
+      <div class="field" style="flex:1;margin:0;padding:12px 14px;font-size:12px">file your letter, make it sting…</div>
+      <div class="btn hot" style="padding:12px 16px 10px;font-size:13px">SEND</div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ════════ 12 · THE ARCHIVE (saves / clippings) ════════ -->
+<div class="wrap"><span class="tag0">12 · saves — “the archive” (pushed in RAP stack)</span>
+<div class="phone">
+  <div class="mhead">
+    <div style="display:flex;align-items:baseline;gap:10px"><span class="mono" style="color:var(--mut);font-size:14px">‹</span><div><div class="mono" style="font-size:7.5px;letter-spacing:.16em;color:var(--faint)">BACK TO YOUR RAP SHEET</div><div class="mast" style="font-size:20px">the archive</div></div></div>
+    <div class="pill warm">YOUR FILE</div>
+  </div>
+  <div class="body">
+    <!-- tabs -->
+    <div style="display:flex;gap:8px;margin:4px 0 4px">
+      <div class="pill hot" style="font-size:8.5px">✂ CLIPPINGS · 12</div>
+      <div class="pill" style="font-size:8.5px;border:1.5px solid var(--line);color:var(--mut)">MY PRINTS · 8</div>
+      <div class="pill" style="font-size:8.5px;border:1.5px solid var(--line);color:var(--mut)">THE RECORD · 23</div>
+    </div>
+    <div class="aside" style="font-size:12px;margin-top:8px">things you cut out and kept. we don’t judge. we absolutely judge.</div>
+
+    <!-- clipping 1 — taped, rotated -->
+    <div style="position:relative;transform:rotate(-1.3deg);margin-top:16px">
+      <div style="position:absolute;top:-8px;left:34px;width:54px;height:16px;background:rgba(255,196,0,.35);transform:rotate(-4deg);z-index:3;border-radius:2px"></div>
+      <div class="front" style="padding:13px 15px">
+        <div class="byline" style="margin-bottom:5px">
+          <div class="av" style="background:var(--claude);width:24px;height:24px;font-size:10px">R</div>
+          <b style="font-size:11px">@ria_ships</b>
+          <div class="kchip" style="color:var(--flame);border-color:var(--flame)">ROAST</div>
+        </div>
+        <h2 style="font-size:16px;margin:0 0 5px">SPEEDRAN HER OWN FUNERAL</h2>
+        <div class="foot" style="margin-top:6px;padding-top:6px">
+          <div class="barc"><i>CLIPPED JUN 10 · 21:52</i></div>
+          <div class="reacts"><div class="re lit"><svg><use href="#fl"/></svg>47</div><div class="re lit">✂</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- clipping 2 -->
+    <div style="position:relative;transform:rotate(1.1deg);margin-top:16px">
+      <div style="position:absolute;top:-8px;right:40px;width:54px;height:16px;background:rgba(255,196,0,.35);transform:rotate(5deg);z-index:3;border-radius:2px"></div>
+      <div class="front" style="padding:13px 15px">
+        <div class="byline" style="margin-bottom:5px">
+          <div class="av" style="background:#9C7BD4;width:24px;height:24px;font-size:10px">M</div>
+          <b style="font-size:11px">@meera.codes</b>
+          <div class="kchip" style="color:#10A37F;border-color:#10A37F">COOKED</div>
+        </div>
+        <h2 style="font-size:16px;margin:0 0 5px">SPAWNED 6 SUBAGENTS, WENT TO MAKE CHAI</h2>
+        <div class="foot" style="margin-top:6px;padding-top:6px">
+          <div class="barc"><i>CLIPPED JUN 9 · 14:31</i></div>
+          <div class="reacts"><div class="re dim"><svg><use href="#fl"/></svg>23</div><div class="re lit">✂</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- clipping 3 — your own roast, kept -->
+    <div style="position:relative;transform:rotate(-.8deg);margin-top:16px">
+      <div style="position:absolute;top:-8px;left:50%;width:54px;height:16px;background:rgba(255,196,0,.35);transform:translateX(-50%) rotate(-2deg);z-index:3;border-radius:2px"></div>
+      <div class="front" style="padding:13px 15px">
+        <div class="byline" style="margin-bottom:5px">
+          <div class="av" style="background:var(--claude);width:24px;height:24px;font-size:10px">K</div>
+          <b style="font-size:11px">@kanwar</b>
+          <div class="kchip" style="color:var(--stamp);border-color:var(--stamp)">SELF-CLIP</div>
+        </div>
+        <h2 style="font-size:16px;margin:0 0 5px">820M TOKENS AND STILL NO OFF SWITCH</h2>
+        <div class="fra" style="font-size:11px;color:var(--mut)">— you saved a roast of yourself. seek help. or don’t, it’s good material.</div>
+        <div class="foot" style="margin-top:8px;padding-top:6px">
+          <div class="barc"><i>CLIPPED JUN 10 · 21:30</i></div>
+          <div class="reacts"><div class="re lit">✂</div><div class="re dim">↗</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <i><b>YOU</b>tonight</i><i><b>PAPER</b>the feed</i><i><b>ROAST</b>main event</i><i class="on"><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 12b · THE ARCHIVE — MY PRINTS ════════ -->
+<div class="wrap"><span class="tag0">12b · the archive — “my prints” tab</span>
+<div class="phone">
+  <div class="mhead">
+    <div style="display:flex;align-items:baseline;gap:10px"><span class="mono" style="color:var(--mut);font-size:14px">‹</span><div><div class="mono" style="font-size:7.5px;letter-spacing:.16em;color:var(--faint)">BACK TO YOUR RAP SHEET</div><div class="mast" style="font-size:20px">the archive</div></div></div>
+    <div class="pill warm">YOUR FILE</div>
+  </div>
+  <div class="body">
+    <div style="display:flex;gap:8px;margin:4px 0 4px">
+      <div class="pill" style="font-size:8.5px;border:1.5px solid var(--line);color:var(--mut)">✂ CLIPPINGS · 12</div>
+      <div class="pill hot" style="font-size:8.5px">MY PRINTS · 8</div>
+      <div class="pill" style="font-size:8.5px;border:1.5px solid var(--line);color:var(--mut)">THE RECORD · 23</div>
+    </div>
+    <div class="aside" style="font-size:12px;margin-top:8px">everything that ran with your byline. the editor keeps everything. everything.</div>
+
+    <div class="front" style="margin-top:14px">
+      <div class="mh"><b>THE COOKD PRESS</b><span>RAN JUN 10 · 21:31</span></div>
+      <div class="byline" style="margin-bottom:5px">
+        <div class="kchip" style="color:var(--flame);border-color:var(--flame);margin-left:0">ROAST</div>
+        <i style="margin-left:auto">YOUR MOST SYNDICATED — 31 SHARES</i>
+      </div>
+      <h2 style="font-size:19px">820M TOKENS AND STILL NO OFF SWITCH</h2>
+      <div class="foot" style="margin-top:8px">
+        <div class="barc"><div class="barcode"></div><i>FRONT PAGE FOR 2 HOURS</i></div>
+        <div class="reacts"><div class="re lit"><svg><use href="#fl"/></svg>112</div><div class="re dim">✎ 34</div><div class="re dim">↗ 31</div></div>
+      </div>
+    </div>
+
+    <div class="front" style="margin-top:12px;padding:13px 15px">
+      <div class="byline" style="margin-bottom:4px">
+        <div class="kchip" style="color:var(--stamp);border-color:var(--stamp);margin-left:0">COOKED</div>
+        <i style="margin-left:auto">RAN JUN 9 · 19:02</i>
+      </div>
+      <h2 style="font-size:16px;margin:0 0 4px">COOKED MID-DEMO. CLIENT WATCHED.</h2>
+      <div class="foot" style="margin-top:7px;padding-top:7px">
+        <div class="barc"><i>YOUR MOST FLAMED — EVER</i></div>
+        <div class="reacts"><div class="re lit"><svg><use href="#fl"/></svg>89</div><div class="re dim">✎ 27</div></div>
+      </div>
+    </div>
+
+    <div class="front" style="margin-top:12px;padding:13px 15px;opacity:.75">
+      <div class="byline" style="margin-bottom:4px">
+        <div class="kchip" style="color:#9C7BD4;border-color:#9C7BD4;margin-left:0">SUNDAY ED.</div>
+        <i style="margin-left:auto">RAN JUN 8</i>
+      </div>
+      <h2 style="font-size:16px;margin:0 0 4px">A WEEK IN FLAMES — WK23</h2>
+      <div class="foot" style="margin-top:7px;padding-top:7px">
+        <div class="barc"><i>5 COOKINGS · 142M TORCHED</i></div>
+        <div class="reacts"><div class="re dim"><svg><use href="#fl"/></svg>41</div><div class="re dim">↗ 12</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <i><b>YOU</b>tonight</i><i><b>PAPER</b>the feed</i><i><b>ROAST</b>main event</i><i class="on"><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 12c · THE ARCHIVE — THE RECORD ════════ -->
+<div class="wrap"><span class="tag0">12c · the archive — “the record” tab (cooked history)</span>
+<div class="phone">
+  <div class="mhead">
+    <div style="display:flex;align-items:baseline;gap:10px"><span class="mono" style="color:var(--mut);font-size:14px">‹</span><div><div class="mono" style="font-size:7.5px;letter-spacing:.16em;color:var(--faint)">BACK TO YOUR RAP SHEET</div><div class="mast" style="font-size:20px">the archive</div></div></div>
+    <div class="pill warm">YOUR FILE</div>
+  </div>
+  <div class="body">
+    <div style="display:flex;gap:8px;margin:4px 0 4px">
+      <div class="pill" style="font-size:8.5px;border:1.5px solid var(--line);color:var(--mut)">✂ CLIPPINGS · 12</div>
+      <div class="pill" style="font-size:8.5px;border:1.5px solid var(--line);color:var(--mut)">MY PRINTS · 8</div>
+      <div class="pill hot" style="font-size:8.5px">THE RECORD · 23</div>
+    </div>
+    <div class="aside" style="font-size:12px;margin-top:8px">your full criminal history, dated and stamped. 23 cookings on file. the law keeps count.</div>
+
+    <div class="ticket" style="margin-top:12px">
+      <div class="l"><i>CURRENT STREAK</i><b style="font-size:19px;color:var(--flame)">5 DAYS COOKED</b></div>
+      <div class="r">PERSONAL<br>WORST<br>(BEST?)</div>
+    </div>
+
+    <div class="secline" style="margin:14px 0 6px">THIS WEEK</div>
+
+    <div class="receipt">
+      <h4><span>TUE · JUN 10</span><span style="color:var(--flame)">★ COOKED</span></h4>
+      <div class="row"><span>18:02 → 21:14</span><b class="hotv">38.4M · 3H 12M</b></div>
+      <div class="row"><span>CRAWLED BACK AFTER RESET IN</span><b>8 MINUTES</b></div>
+    </div>
+
+    <div class="receipt" style="margin-top:10px">
+      <h4><span>MON · JUN 9</span><span style="color:var(--flame)">★ COOKED ×2</span></h4>
+      <div class="row"><span>09:14 → 10:52</span><b class="hotv">38.1M · 1H 38M — SPEEDRUN</b></div>
+      <div class="row"><span>19:20 → 23:55</span><b class="hotv">37.9M · 4H 35M</b></div>
+      <div class="row"><span>EDITOR’S NOTE</span><b>TWICE. IN ONE DAY. A RECORD.</b></div>
+    </div>
+
+    <div class="receipt" style="margin-top:10px">
+      <h4><span>SUN · JUN 8</span><span style="color:#998c77">— SURVIVED</span></h4>
+      <div class="row"><span>PEAKED AT</span><b>84% — LOST NERVE</b></div>
+      <div class="row"><span>EDITOR’S NOTE</span><b>COWARDICE, TECHNICALLY</b></div>
+    </div>
+
+    <div class="mono" style="text-align:center;font-size:9px;letter-spacing:.16em;color:var(--faint);margin-top:12px">LOAD OLDER CHARGES ↓</div>
+  </div>
+  <div class="nav">
+    <i><b>YOU</b>tonight</i><i><b>PAPER</b>the feed</i><i><b>ROAST</b>main event</i><i class="on"><b>RAP</b>sheet</i>
+  </div>
+</div></div>
+
+<!-- ════════ 13 · SYNDICATE SHEET (share) ════════ -->
+<div class="wrap"><span class="tag0">13 · share — “syndicate it” (bottom sheet)</span>
+<div class="phone">
+  <!-- dimmed feed behind -->
+  <div style="position:absolute;inset:0;filter:blur(2px) brightness(.5);pointer-events:none">
+    <div class="mhead" style="border-bottom:2.5px solid var(--ink);padding-bottom:10px"><div><div class="mast" style="font-size:30px">the cookd press</div></div></div>
+    <div class="body">
+      <div class="front" style="margin-top:10px"><h2 style="font-size:22px">LOCAL FOUNDER SPEEDRUNS HER OWN FUNERAL</h2></div>
+    </div>
+  </div>
+  <!-- sheet -->
+  <div style="position:absolute;left:0;right:0;bottom:0;background:var(--bg2);border-top:2px solid var(--flame);border-radius:22px 22px 0 0;padding:14px 22px 30px;z-index:5">
+    <div style="width:44px;height:4px;border-radius:99px;background:var(--line);margin:0 auto 14px"></div>
+    <div class="kick" style="margin:0 0 4px">SYNDICATION DESK</div>
+    <div class="h1" style="font-size:27px">SPREAD THE <span class="hot">SHAME.</span></div>
+    <div class="aside" style="font-size:12px">this column deserves a wider audience. the subject disagrees. perfect.</div>
+
+    <!-- card preview -->
+    <div class="receipt" style="margin-top:13px">
+      <h4><span>EXPORT PREVIEW — IMAGE CARD</span><span>1080×1350</span></h4>
+      <div style="font:600 11px/1.9 'JetBrains Mono'">“SPEEDRAN HER OWN FUNERAL” + stats barcode + cookd. watermark</div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:13px">
+      <div class="btn ghost" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--ink)"><span class="anton" style="font-size:15px">𝕏</span> POST IT</div>
+      <div class="btn ghost" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--flame)"><span class="anton" style="font-size:13px">⬡</span> r/CLAUDEAI</div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:9px">
+      <div class="btn ghost" style="flex:1;font-size:12px;color:var(--mut)">COPY LINK</div>
+      <div class="btn ghost" style="flex:1;font-size:12px;color:var(--mut)">SAVE IMAGE</div>
+    </div>
+    <div class="mono" style="text-align:center;font-size:8.5px;letter-spacing:.16em;color:var(--faint);margin-top:12px">MORE WIRES SOON — TELEGRAPH STILL DOWN</div>
+  </div>
+</div></div>
+
+</div>
+</body>
+</html>

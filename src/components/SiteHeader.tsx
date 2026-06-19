@@ -28,7 +28,7 @@ export default function SiteHeader() {
       <Marquee />
       <nav
         ref={navRef}
-        className="flex items-center justify-between gap-[18px] px-4 sm:px-[clamp(16px,4vw,44px)] py-[13px] border-b border-transparent backdrop-blur-[16px] backdrop-saturate-[1.2] transition-colors duration-300"
+        className="relative flex items-center justify-between gap-[18px] px-4 sm:px-[clamp(16px,4vw,44px)] py-[13px] border-b border-transparent backdrop-blur-[16px] backdrop-saturate-[1.2] transition-colors duration-300"
         style={{
           background: scrolled ? "color-mix(in srgb, var(--bg) 72%, transparent)" : "transparent",
           borderColor: scrolled ? "var(--border)" : "transparent",
@@ -40,11 +40,10 @@ export default function SiteHeader() {
         >
           cookd<span className="text-orange">.</span>
         </Link>
-        <div className="hidden md:flex items-center gap-[26px] font-mono font-semibold text-[11.5px] tracking-[0.18em]">
+        <div className="hidden md:flex items-center gap-[26px] font-mono font-semibold text-[11.5px] tracking-[0.18em] absolute left-1/2 -translate-x-1/2">
+          <Link href="/#get-started" className="no-underline text-muted hover:text-ink transition-colors">GET IT</Link>
           <Link href="/#cook" className="no-underline text-muted hover:text-ink transition-colors">SEE IT COOK</Link>
-          <Link href="/#desks" className="no-underline text-muted hover:text-ink transition-colors">THE DESKS</Link>
-          <Link href="/#heat" className="no-underline text-muted hover:text-ink transition-colors">THE HEAT</Link>
-          <Link href="/#paper" className="no-underline text-muted hover:text-ink transition-colors">THE PAPER</Link>
+          <Link href="/#closed" className="no-underline text-muted hover:text-ink transition-colors">PRESS CLOSED</Link>
         </div>
         <div className="flex items-center gap-3">
           <ThemeToggle />

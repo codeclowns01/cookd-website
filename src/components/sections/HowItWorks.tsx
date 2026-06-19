@@ -1,12 +1,13 @@
 import PhoneFrame from "../PhoneFrame";
 import Reveal from "../Reveal";
+import AppScreen from "../screens/AppScreen";
+import type { ScreenName } from "../screens/AppScreen";
 
-const STEPS = [
+const STEPS: { no: string; title: string; screen: ScreenName; alt: string; copy: React.ReactNode }[] = [
   {
     no: "01",
     title: "PRESENT YOUR\nCREDENTIALS",
-    dark: "/phones/dark-01-login.png",
-    light: "/phones/light-01-login.png",
+    screen: "entrance",
     alt: "cookd login",
     copy: (
       <>
@@ -18,16 +19,14 @@ const STEPS = [
   {
     no: "02",
     title: "DEPUTIZE\nYOUR MACHINE",
-    dark: "/phones/dark-02-deputize.png",
-    light: "/phones/light-02-deputize.png",
+    screen: "deputize",
     alt: "deputize your machine",
     copy: "A field reporter moves in next to your usage page. It counts everything. It never blinks.",
   },
   {
     no: "03",
     title: "RECEIVE\nYOUR VERDICT",
-    dark: "/phones/dark-03-cooked.png",
-    light: "/phones/light-03-cooked.png",
+    screen: "cooked",
     alt: "you did it again, chef",
     copy: (
       <>
@@ -64,7 +63,9 @@ export default function HowItWorks() {
                 <span className="font-mono font-bold text-[13px] tracking-[0.12em] text-ink whitespace-pre-line">{s.title}</span>
               </div>
               <div className="w-full max-w-[280px] mx-auto">
-                <PhoneFrame dark={s.dark} light={s.light} alt={s.alt} outerRadius={40} innerRadius={34} />
+                <PhoneFrame outerRadius={40} innerRadius={34}>
+                  <AppScreen screen={s.screen} />
+                </PhoneFrame>
               </div>
               <p className="m-0 text-[14.5px] leading-[1.55] text-muted text-center">{s.copy}</p>
             </Reveal>

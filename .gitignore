@@ -44,3 +44,4 @@ next-env.d.ts
 # local-only
 /_design_import
 /.claude
+.gstack/

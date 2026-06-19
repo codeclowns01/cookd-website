@@ -7,7 +7,7 @@
   --surface2: #1b1714;
   --ink: #f2ead9;
   --muted: #8d8377;
-  --faint: #5d564c;
+  --faint: #8d8377;
   --border: #332d26;
   --line: #241f1a;
   --orange: #ff4d00;
@@ -60,7 +60,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 * {

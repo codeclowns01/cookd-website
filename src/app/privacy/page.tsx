@@ -3,7 +3,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy: cookd.",
+  title: "cookd.",
   description:
     "What cookd reads from your machine, what it sends to our servers, what it never touches, and how to get your data deleted.",
 };
@@ -68,7 +68,7 @@ export default function PrivacyPolicy() {
 
         {/* intro */}
         <p className="text-[clamp(16px,1.4vw,18px)] leading-[1.7] text-muted">
-          cookd is built by <span className="text-ink font-semibold">CodeClowns Technologies LLP</span>. This policy
+          Cookd is built by <span className="text-ink font-semibold">CodeClowns Technologies LLP</span>. This policy
           explains, in full, what the cookd companion (the <span className="font-mono text-ink">npx @codeclowns/cookd</span>{" "}
           CLI) reads from your machine, what the cookd app stores about you, what gets sent to our servers, what
           never leaves your device, and how to get all of it deleted.
@@ -289,7 +289,7 @@ export default function PrivacyPolicy() {
           8. This website
         </h2>
         <p className="text-[15px] leading-[1.7] text-muted">
-          cookd.dev (this marketing site) does not set tracking cookies and does not run third-party analytics. The
+          cookd.lol (this marketing site) does not set tracking cookies and does not run third-party analytics. The
           numbers shown here (tokens torched, press pool size, heat index) are aggregate figures, not tied to any
           individual visitor. If that changes, this policy will be updated and the date at the top will reflect it.
         </p>
@@ -299,7 +299,7 @@ export default function PrivacyPolicy() {
           9. Children&apos;s privacy
         </h2>
         <p className="text-[15px] leading-[1.7] text-muted">
-          cookd is a developer tool intended for professional and hobbyist software engineers. It is not directed at
+          Cookd is a developer tool intended for professional and hobbyist software engineers. It is not directed at
           children, and we do not knowingly collect data from anyone under 16.
         </p>
 

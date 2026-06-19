@@ -5,6 +5,7 @@ import GetStarted from "@/components/sections/GetStarted";
 import EditorIntro from "@/components/sections/EditorIntro";
 import RoastDemo from "@/components/sections/RoastDemo";
 import PressClosed from "@/components/sections/PressClosed";
+import OpenSource from "@/components/sections/OpenSource";
 import FinalCTA from "@/components/sections/FinalCTA";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
         <EditorIntro />
         <RoastDemo />
         <PressClosed />
+        <OpenSource />
         <FinalCTA />
       </main>
       <SiteFooter />

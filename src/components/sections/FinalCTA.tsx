@@ -23,16 +23,16 @@ export default function FinalCTA() {
           everyone. <span className="font-fraunces italic text-ink">Especially yourself.</span>
         </Reveal>
 
-        <Reveal ty={34} className="mt-[38px] flex flex-wrap gap-[14px] justify-center items-center">
-          <div className="flex items-center gap-[14px] bg-surface border border-border rounded-xl px-[18px] py-[15px] font-mono">
-            <span className="text-orange">$</span>
-            <span className="text-ink text-[16px]">npx @codeclowns/cookd init</span>
-            <CopyButton text="npx @codeclowns/cookd init" className="ml-[6px]" />
+        <Reveal ty={34} className="mt-[38px] flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-[14px] justify-center items-stretch sm:items-center">
+          <div className="flex items-center gap-[10px] sm:gap-[14px] bg-surface border border-border rounded-xl px-3 sm:px-[18px] py-[13px] sm:py-[15px] font-mono min-w-0">
+            <span className="text-orange shrink-0">$</span>
+            <span className="text-ink text-[14px] sm:text-[16px] truncate">npx @codeclowns/cookd init</span>
+            <CopyButton text="npx @codeclowns/cookd init" className="ml-auto shrink-0" />
           </div>
           <a
             href="/downloads/cookd-application.apk"
             download
-            className="no-underline inline-flex items-center gap-[10px] bg-orange text-[#160a04] font-anton text-[21px] tracking-[0.03em] px-[30px] py-4 rounded-xl"
+            className="no-underline inline-flex items-center justify-center gap-[10px] bg-orange text-[#160a04] font-anton text-[19px] sm:text-[21px] tracking-[0.03em] px-[22px] sm:px-[30px] py-[14px] sm:py-4 rounded-xl"
             style={{ boxShadow: "0 0 0 1px rgba(255,77,0,0.4), 0 16px 44px -12px rgba(255,77,0,0.7)" }}
           >
             DOWNLOAD FOR ANDROID →
@@ -46,7 +46,7 @@ export default function FinalCTA() {
           NO EMAIL · NO PASSWORD · NO TOURISTS · NO REFUNDS
         </Reveal>
         <Reveal ty={34} as="div" className="mt-10 font-fraunces italic text-[18px] text-muted">
-          Dr. Cookd, MD · <span className="text-ink">Mostly Disappointed, Always Watching.</span>
+          Dr. Cookd, MD · <span className="text-ink">Always Watching, Mostly Disappointed.</span>
         </Reveal>
       </div>
     </section>

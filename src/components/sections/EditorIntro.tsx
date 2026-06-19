@@ -7,7 +7,7 @@ export default function EditorIntro() {
       className="relative px-4 sm:px-[clamp(16px,4vw,44px)] py-[clamp(50px,7vw,100px)] bg-bg2 border-t border-b border-border"
     >
       <div className="max-w-[1240px] mx-auto flex gap-7 sm:gap-[clamp(28px,4vw,64px)] items-center flex-wrap">
-        <div className="flex-1 basis-[420px] min-w-[300px]">
+        <div className="flex-1 basis-[420px] min-w-0">
           <Reveal ty={34} as="div" className="font-mono font-semibold text-[12px] tracking-[0.26em] text-orange mb-[18px]">
             MEET YOUR EDITOR
           </Reveal>
@@ -39,12 +39,12 @@ export default function EditorIntro() {
         </div>
 
         {/* editor column card */}
-        <div className="flex-1 basis-[380px] min-w-[300px] flex justify-center">
+        <div className="flex-1 basis-[380px] min-w-0 flex justify-center">
           <Reveal
             ty={40}
             delay={0.1}
             rot="-1.4deg"
-            className="w-full max-w-[440px] bg-surface border border-border rounded-[14px] px-[30px] pt-[30px] pb-[26px] relative"
+            className="w-full max-w-[440px] bg-surface border border-border rounded-[14px] px-4 sm:px-[30px] pt-[22px] sm:pt-[30px] pb-[20px] sm:pb-[26px] relative"
             style={{ boxShadow: "0 40px 70px -30px rgba(0,0,0,0.7)" }}
           >
             <div className="flex justify-between items-baseline">
@@ -79,7 +79,7 @@ export default function EditorIntro() {
               </div>
               <div className="font-fraunces italic text-[15px] text-ink">the editor</div>
             </div>
-            <div className="absolute top-[64px] -right-[14px] rotate-[-9deg] font-anton text-[17px] tracking-[0.04em] text-yellow border-[3px] border-yellow rounded-[6px] px-[10px] py-[3px] bg-surface">
+            <div className="absolute top-[64px] right-[6px] sm:-right-[14px] rotate-[-9deg] font-anton text-[14px] sm:text-[17px] tracking-[0.04em] text-yellow border-[3px] border-yellow rounded-[6px] px-[8px] sm:px-[10px] py-[3px] bg-surface">
               EXCLUSIVE
             </div>
           </Reveal>

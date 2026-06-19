@@ -50,10 +50,11 @@ export default function SiteHeader() {
           <a
             href="/downloads/cookd-application.apk"
             download
-            className="no-underline bg-orange text-[#160a04] font-mono font-bold text-[11.5px] tracking-[0.16em] px-4 py-[10px] rounded-full"
+            className="no-underline bg-orange text-[#160a04] font-mono font-bold text-[10px] sm:text-[11.5px] tracking-[0.16em] px-3 sm:px-4 py-[8px] sm:py-[10px] rounded-full"
             style={{ boxShadow: "0 0 0 1px rgba(255,77,0,0.4), 0 8px 24px -8px rgba(255,77,0,0.6)" }}
           >
-            GET COOKED →
+            <span className="hidden sm:inline">GET COOKED →</span>
+            <span className="sm:hidden">GET COOKED</span>
           </a>
         </div>
       </nav>

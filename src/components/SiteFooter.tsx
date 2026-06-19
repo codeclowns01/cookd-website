@@ -32,7 +32,7 @@ export default function SiteFooter() {
   return (
     <footer className="relative px-4 sm:px-[clamp(16px,4vw,44px)] pt-[clamp(44px,5vw,68px)] pb-[clamp(36px,4vw,52px)] bg-bg2 border-t border-border">
       <div className="max-w-[1240px] mx-auto">
-        <div className="flex justify-between gap-[20px] flex-wrap items-center">
+        <div className="flex flex-col sm:flex-row justify-between gap-5 sm:gap-[20px] items-start sm:items-center">
           <div>
             <div className="font-anton text-[34px] text-ink">
               cookd<span className="text-orange">.</span>
@@ -71,9 +71,9 @@ export default function SiteFooter() {
             </div>
           </div>
         </div>
-        <div className="mt-9 border-t border-border pt-[18px] flex justify-between flex-wrap gap-[10px]">
-          <span className="font-mono text-[10.5px] tracking-[0.12em] text-faint">© 2026 CODECLOWNS TECHNOLOGIES LLP · ALL FLOPS RESERVED</span>
-          <span className="font-mono text-[10.5px] tracking-[0.12em] text-faint">0 FRIENDS · 38,400,000 TOKENS · DIGNITY: NOT FOUND</span>
+        <div className="mt-9 border-t border-border pt-[18px] flex flex-col sm:flex-row justify-between gap-[8px] sm:gap-[10px]">
+          <span className="font-mono text-[9.5px] sm:text-[10.5px] tracking-[0.12em] text-faint">© 2026 CODECLOWNS TECHNOLOGIES LLP · ALL FLOPS RESERVED</span>
+          <span className="font-mono text-[9.5px] sm:text-[10.5px] tracking-[0.12em] text-faint">0 FRIENDS · 38,400,000 TOKENS · DIGNITY: NOT FOUND</span>
         </div>
       </div>
     </footer>

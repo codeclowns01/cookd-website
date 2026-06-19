@@ -19,12 +19,12 @@ const STEPS = [
   {
     number: "01",
     title: "Run the command",
-    desc: "Open your terminal. Paste the command. cookd reads your Claude Code usage data locally — nothing leaves your machine.",
+    desc: "Open your terminal. Paste the command. Cookd reads your Claude Code usage data locally - nothing leaves your machine.",
   },
   {
     number: "02",
     title: "Get your summary",
-    desc: "The editor scans your session — tokens burned, models used, cache hits. A summary prints in full newspaper style.",
+    desc: "The editor scans your session - tokens burned, models used, cache hits. A summary prints in full newspaper style.",
   },
   {
     number: "03",
@@ -125,7 +125,7 @@ export default function GetStarted() {
 
         <div className="flex gap-7 sm:gap-[clamp(28px,4vw,56px)] items-start flex-wrap">
           {/* Terminal */}
-          <Reveal ty={40} delay={0.08} className="flex-1 basis-[520px] min-w-[320px]">
+          <Reveal ty={40} delay={0.08} className="flex-1 basis-[520px] min-w-0 w-full">
             <div
               className="rounded-[12px] border border-border overflow-hidden"
               style={{ background: "#0a0806", boxShadow: "0 40px 80px -30px rgba(0,0,0,0.8)" }}
@@ -139,7 +139,7 @@ export default function GetStarted() {
               </div>
 
               {/* terminal body — fixed height, content fades in */}
-              <div className="px-5 py-5 font-mono text-[12.5px] sm:text-[13px] leading-[1.7] h-[420px] overflow-hidden relative">
+              <div className="px-3 sm:px-5 py-4 sm:py-5 font-mono text-[11px] sm:text-[13px] leading-[1.7] h-[380px] sm:h-[420px] overflow-hidden relative">
                 {/* prompt + command */}
                 <div className="flex items-center gap-2">
                   <span className="text-[#8d8377] select-none">$</span>
@@ -154,7 +154,7 @@ export default function GetStarted() {
                 {/* banner */}
                 <div className="mt-3 transition-opacity duration-500" style={{ opacity: phase !== "idle" && phase !== "typing" ? 1 : 0 }}>
                   <div
-                    className="inline-block font-mono font-bold text-[10px] tracking-[0.14em] px-2 py-[3px] rounded-[3px]"
+                    className="inline-block font-mono font-bold text-[8px] sm:text-[10px] tracking-[0.14em] px-2 py-[3px] rounded-[3px]"
                     style={{ background: "#ff4d00", color: "#0a0806" }}
                   >
                     ★ NO CREDENTIALS REQUIRED ★ ENTER CODE IN APP ★
@@ -166,11 +166,11 @@ export default function GetStarted() {
                   className="mt-3 border border-[#332d26] rounded-[4px] p-4 transition-opacity duration-500"
                   style={{ opacity: phase === "summary" || phase === "code" ? 1 : 0 }}
                 >
-                  <div className="flex justify-between items-baseline mb-1">
-                    <span className="font-bold text-[#f2ead9] text-[13px] tracking-[0.04em]">THE COOKD PRESS</span>
-                    <span className="text-[#706357] text-[10px] tracking-[0.08em]">OPINION — SCATHING</span>
+                  <div className="flex justify-between items-baseline mb-1 gap-2">
+                    <span className="font-bold text-[#f2ead9] text-[11px] sm:text-[13px] tracking-[0.04em] shrink-0">THE COOKD PRESS</span>
+                    <span className="text-[#706357] text-[8px] sm:text-[10px] tracking-[0.08em] truncate">OPINION - SCATHING</span>
                   </div>
-                  <div className="text-[#706357] text-[10px] tracking-[0.12em] mb-3 border-b border-[#332d26] pb-2">
+                  <div className="text-[#706357] text-[8px] sm:text-[10px] tracking-[0.12em] mb-3 border-b border-[#332d26] pb-2 truncate">
                     EDITOR&apos;S COLUMN · TONIGHT&apos;S SUBJECT: @YOU
                   </div>
 
@@ -181,23 +181,23 @@ export default function GetStarted() {
                       className="transition-opacity duration-300"
                       style={{ opacity: i < visibleLines ? 1 : 0 }}
                     >
-                      <span className="text-[#c4b9a8] text-[11.5px] whitespace-pre">{line}</span>
+                      <span className="text-[#c4b9a8] text-[10px] sm:text-[11.5px] whitespace-pre overflow-hidden text-ellipsis block">{line}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* progress bar + code */}
                 <div className="mt-3 transition-opacity duration-500" style={{ opacity: phase === "code" ? 1 : 0 }}>
-                  <div className="h-[22px] rounded-[4px] bg-yellow w-full mb-1" />
-                  <div className="text-center text-[#a89880] text-[11px] italic mb-3">100% of limit torched</div>
+                  <div className="h-[18px] sm:h-[22px] rounded-[4px] bg-yellow w-full mb-1 flex items-center justify-center">
+                    <span className="font-mono font-bold text-[9px] sm:text-[11px] tracking-[0.06em] text-[#0a0806]">100% TORCHED</span>
+                  </div>
 
                   {/* code display */}
-                  <div className="flex justify-center gap-3 mb-3">
+                  <div className="flex justify-center gap-2 sm:gap-3 mb-3">
                     {["R", "2", "3", "3", "W", "J"].map((c, i) => (
                       <div
                         key={i}
-                        className="w-[36px] h-[36px] border border-[#a89880] rounded-[6px] flex items-center justify-center font-bold text-[#f2ead9] text-[15px] animate-[ck-float_3s_ease-in-out_infinite]"
-                        style={{ animationDelay: `${i * 0.15}s`, "--r": "0deg" } as React.CSSProperties}
+                        className="w-[28px] h-[28px] sm:w-[36px] sm:h-[36px] border border-[#a89880] rounded-[6px] flex items-center justify-center font-bold text-[#f2ead9] text-[12px] sm:text-[15px]"
                       >
                         {c}
                       </div>
@@ -205,9 +205,9 @@ export default function GetStarted() {
                   </div>
 
                   <div className="text-center pb-1">
-                    <span className="text-[#706357] text-[11px]">{"∴"} EXPIRES IN </span>
-                    <span className="text-orange font-bold text-[12px] tabular-nums">{formatTime(countdown)}</span>
-                    <span className="text-[#706357] text-[11px] italic"> — waiting for credentials...</span>
+                    <span className="text-[#706357] text-[9px] sm:text-[11px]">{"∴"} EXPIRES IN </span>
+                    <span className="text-orange font-bold text-[10px] sm:text-[12px] tabular-nums">{formatTime(countdown)}</span>
+                    <span className="text-[#706357] text-[9px] sm:text-[11px] italic"> - waiting for credentials...</span>
                   </div>
                 </div>
               </div>
@@ -215,7 +215,7 @@ export default function GetStarted() {
           </Reveal>
 
           {/* Steps */}
-          <div className="flex-1 basis-[340px] min-w-[280px] flex flex-col gap-0 pt-2">
+          <div className="flex-1 basis-[340px] min-w-0 flex flex-col gap-0 pt-2">
             {STEPS.map((step, i) => (
               <Reveal key={step.number} ty={34} delay={0.1 + i * 0.08}>
                 <div

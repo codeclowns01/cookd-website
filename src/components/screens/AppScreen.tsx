@@ -6,5 +6,10 @@ import { SCREENS, type ScreenName } from "./screenContent";
 export type { ScreenName };
 
 export default function AppScreen({ screen }: { screen: ScreenName }) {
-  return <div dangerouslySetInnerHTML={{ __html: SCREENS[screen] }} />;
+  return (
+    <div
+      style={{ display: "flex", flexDirection: "column", flex: 1, height: "100%" }}
+      dangerouslySetInnerHTML={{ __html: SCREENS[screen] }}
+    />
+  );
 }

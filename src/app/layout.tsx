@@ -30,9 +30,21 @@ const schibstedGrotesk = Schibsted_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "cookd. The Anti-Social Network",
+  title: "cookd.",
   description:
-    "You don't post. You get posted. cookd reads your Claude usage, hands the logs to an editor who hates you, and prints what he finds: nightly, in full color, with a barcode.",
+    "You don't post. You get posted. Cookd reads your Claude usage, hands the logs to an editor who hates you, and prints what he finds: nightly, in full color, with a barcode.",
+  icons: {
+    icon: [
+      { url: "/icons/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icons/favicon-64.png", sizes: "64x64", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/favicon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+  },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -47,6 +59,13 @@ export default function RootLayout({
       className={`${anton.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${schibstedGrotesk.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("cookd-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
+      </head>
       <body suppressHydrationWarning>
         <ThemeProvider>
           <HpDefs />

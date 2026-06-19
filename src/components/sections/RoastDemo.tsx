@@ -30,7 +30,7 @@ const FLOW = [
   {
     screen: "feed" as const,
     step: "SYNDICATE THE SHAME",
-    desc: "Share your roast card to X, Reddit, WhatsApp. Let the world see what you did.",
+    desc: "Share your roast card on X, Reddit, WhatsApp. Let the world see what you did.",
     hasClick: true,
     popClass: "hp-pop-share",
   },
@@ -117,7 +117,7 @@ export default function RoastDemo() {
       className="relative px-4 sm:px-[clamp(16px,4vw,44px)] py-[clamp(56px,8vw,120px)] max-w-[1280px] mx-auto"
     >
       <div className="flex gap-7 sm:gap-[clamp(28px,5vw,72px)] items-center flex-wrap">
-        <div className="flex-1 basis-[420px] min-w-[300px]">
+        <div className="flex-1 basis-[420px] min-w-0">
           <Reveal ty={34} className="inline-flex items-center gap-[9px] font-mono font-semibold text-[12px] tracking-[0.24em] text-orange mb-4">
             <span className="w-[7px] h-[7px] rounded-full bg-orange shadow-[0_0_9px_var(--orange)]" />
             LIVE FROM THE NEWSROOM
@@ -155,7 +155,7 @@ export default function RoastDemo() {
           </Reveal>
         </div>
 
-        <div className="flex-1 basis-[320px] min-w-[280px] flex flex-col items-center relative">
+        <div className="flex-1 basis-[280px] sm:basis-[320px] min-w-0 flex flex-col items-center relative">
           <div
             className="absolute w-[340px] h-[340px] rounded-full blur-[14px] top-[6%] pointer-events-none"
             style={{ background: "radial-gradient(circle, rgba(255,77,0,0.22), rgba(255,77,0,0) 65%)" }}

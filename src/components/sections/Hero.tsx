@@ -24,7 +24,7 @@ export default function Hero() {
 
       <div className="flex gap-6 sm:gap-[clamp(24px,4vw,56px)] items-center flex-wrap relative">
         {/* left */}
-        <div className="flex-1 basis-[460px] min-w-[300px]">
+        <div className="flex-1 basis-[460px] min-w-0">
           <Reveal className="inline-flex items-center gap-[10px] border border-border rounded-full px-[14px] py-[7px] mb-[26px]">
             <span className="w-[7px] h-[7px] rounded-full bg-orange shadow-[0_0_10px_var(--orange)] animate-[ck-flicker_1.6s_infinite]" />
             <span className="font-mono font-semibold text-[11px] tracking-[0.2em] text-muted">
@@ -33,25 +33,25 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={0.06} as="h1" className="m-0 font-anton font-normal leading-[0.9] tracking-[0.005em] text-[clamp(52px,9vw,116px)] text-ink uppercase">
-            The anti&#8209;social<br />network<span className="text-orange">.</span>
+            The<br />anti<span className="text-orange">-</span>social<br />network<span className="text-orange">.</span>
           </Reveal>
 
           <Reveal delay={0.12} as="p" className="mt-[26px] max-w-[540px] text-[clamp(17px,1.5vw,20px)] leading-[1.6] text-muted">
-            You don&apos;t post. You get <span className="text-ink font-semibold">posted</span>. cookd reads your
+            You don&apos;t post. You get <span className="text-ink font-semibold">posted</span>. Cookd reads your
             Claude usage, hands the logs to an editor who hates you, and prints what he finds:{" "}
             <span className="font-fraunces italic text-ink">nightly, in full color, with a barcode.</span>
           </Reveal>
 
-          <Reveal delay={0.18} className="mt-[34px] flex flex-wrap gap-[14px] items-center">
-            <div className="flex items-center gap-[14px] bg-surface border border-border rounded-xl px-4 py-[13px] font-mono">
-              <span className="text-orange">$</span>
-              <span className="text-ink text-[15px] tracking-[0.01em]">npx @codeclowns/cookd init</span>
-              <CopyButton text="npx @codeclowns/cookd init" className="ml-[6px]" />
+          <Reveal delay={0.18} className="mt-[34px] flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-[14px] items-stretch sm:items-center">
+            <div className="flex items-center gap-[10px] sm:gap-[14px] bg-surface border border-border rounded-xl px-3 sm:px-4 py-[11px] sm:py-[13px] font-mono min-w-0">
+              <span className="text-orange shrink-0">$</span>
+              <span className="text-ink text-[13px] sm:text-[15px] tracking-[0.01em] truncate">npx @codeclowns/cookd init</span>
+              <CopyButton text="npx @codeclowns/cookd init" className="ml-auto shrink-0" />
             </div>
             <a
               href="/downloads/cookd-application.apk"
               download
-              className="no-underline inline-flex items-center gap-[10px] bg-orange text-[#160a04] font-anton text-[19px] tracking-[0.03em] px-[26px] py-[14px] rounded-xl"
+              className="no-underline inline-flex items-center justify-center gap-[10px] bg-orange text-[#160a04] font-anton text-[17px] sm:text-[19px] tracking-[0.03em] px-[20px] sm:px-[26px] py-[12px] sm:py-[14px] rounded-xl"
               style={{ boxShadow: "0 0 0 1px rgba(255,77,0,0.4), 0 14px 40px -12px rgba(255,77,0,0.7)" }}
             >
               DOWNLOAD FOR ANDROID →
@@ -60,7 +60,7 @@ export default function Hero() {
               href="https://github.com/codeclowns01/cookd"
               target="_blank"
               rel="noopener noreferrer"
-              className="no-underline inline-flex items-center gap-[10px] bg-surface border border-border text-ink font-anton text-[17px] tracking-[0.03em] px-[22px] py-[13px] rounded-xl hover:border-orange transition-colors"
+              className="no-underline inline-flex items-center justify-center gap-[10px] bg-surface border border-border text-ink font-anton text-[16px] sm:text-[17px] tracking-[0.03em] px-[18px] sm:px-[22px] py-[11px] sm:py-[13px] rounded-xl hover:border-orange transition-colors"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
@@ -97,7 +97,7 @@ export default function Hero() {
         </div>
 
         {/* right phone */}
-        <div className="flex-1 basis-[320px] min-w-[280px] flex justify-center relative">
+        <div className="flex-1 basis-[280px] sm:basis-[320px] min-w-0 sm:min-w-[280px] flex justify-center relative">
           <Parallax
             speed={0.08}
             className="w-[340px] h-[340px] rounded-full blur-[10px] top-[8%]"
@@ -108,7 +108,7 @@ export default function Hero() {
               <AppScreen screen="cooked" />
             </PhoneFrame>
             <div
-              className="absolute -top-[22px] -right-[30px] rotate-[7deg] animate-[ck-float_5s_ease-in-out_infinite] font-anton text-[26px] tracking-[0.04em] text-yellow border-4 border-yellow rounded-[9px] px-4 py-[6px] bg-[rgba(14,12,10,0.55)] backdrop-blur-[4px]"
+              className="absolute -top-[22px] right-0 sm:-right-[30px] rotate-[7deg] animate-[ck-float_5s_ease-in-out_infinite] font-anton text-[20px] sm:text-[26px] tracking-[0.04em] text-yellow border-4 border-yellow rounded-[9px] px-3 sm:px-4 py-[4px] sm:py-[6px] bg-[rgba(14,12,10,0.55)] backdrop-blur-[4px]"
               style={{ "--r": "7deg" } as React.CSSProperties}
             >
               COOKED

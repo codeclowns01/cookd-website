@@ -320,28 +320,20 @@ export default function RoastDemo() {
                     opacity: showCursor && !showSheet ? 1 : 0,
                   }}
                 >
-                  <svg
-                    width="36"
-                    height="36"
-                    viewBox="0 0 512 512"
+                  <span
                     style={{
-                      filter: "drop-shadow(0 3px 8px rgba(0,0,0,0.55))",
+                      fontSize: 30,
+                      lineHeight: 1,
+                      filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))",
                       transform: clicking ? "scale(0.8) translateY(3px)" : "scale(1) translateY(0)",
                       transition: clicking
                         ? "transform 0.1s cubic-bezier(0.4, 0, 1, 1)"
                         : "transform 0.2s cubic-bezier(0, 0, 0.2, 1)",
-                      marginLeft: -2,
-                      marginTop: 2,
+                      display: "inline-block",
                     }}
                   >
-                    <path
-                      fill="white"
-                      stroke="#1a1512"
-                      strokeWidth="12"
-                      strokeLinejoin="round"
-                      d="M256 48c-17.7 0-32 14.3-32 32v192.5l-52.5-52.5c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l100.7 100.7C247.8 387 276.2 400 306 400h18c57.4 0 104-46.6 104-104V176c0-17.7-14.3-32-32-32s-32 14.3-32 32v-16c0-17.7-14.3-32-32-32s-32 14.3-32 32V80c0-17.7-14.3-32-32-32z"
-                    />
-                  </svg>
+                    👆🏻
+                  </span>
                 </div>
               </div>
             </div>

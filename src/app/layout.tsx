@@ -44,7 +44,6 @@ export const metadata: Metadata = {
       { url: "/icons/favicon-512.png", sizes: "512x512", type: "image/png" },
     ],
   },
-  manifest: "/manifest.json",
 };
 
 export default function RootLayout({

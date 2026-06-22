@@ -56,6 +56,8 @@ export default function PhoneFrame({
         style={{
           borderRadius: innerRadius,
           aspectRatio: children ? "393 / 852" : "0.5",
+          WebkitMaskImage: "radial-gradient(white, white)",
+          isolation: "isolate",
         }}
       >
         {children ? (

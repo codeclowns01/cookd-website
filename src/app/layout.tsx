@@ -30,9 +30,24 @@ const schibstedGrotesk = Schibsted_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.cookd.lol"),
   title: "cookd.",
   description:
     "You don't post. You get posted. Cookd reads your Claude usage, hands the logs to an editor who hates you, and prints what he finds: nightly, in full color, with a barcode.",
+  openGraph: {
+    type: "website",
+    siteName: "cookd.",
+    title: "cookd. — the anti-social network.",
+    description:
+      "You don't post. You get posted. Cookd reads your Claude usage, hands the logs to an editor who hates you, and prints what he finds: nightly, in full color, with a barcode.",
+    url: "https://www.cookd.lol",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "cookd. — the anti-social network.",
+    description:
+      "You don't post. You get posted. Cookd reads your Claude usage, and prints what it finds: nightly, in full color, with a barcode.",
+  },
   icons: {
     icon: [
       { url: "/icons/favicon-16.png", sizes: "16x16", type: "image/png" },

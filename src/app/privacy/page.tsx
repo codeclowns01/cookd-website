@@ -350,7 +350,9 @@ export default function PrivacyPolicy() {
         </h2>
         <p className="text-[15px] leading-[1.7] text-muted">
           Cookd is a developer tool intended for professional and hobbyist software engineers. It is not directed at
-          children, and we do not knowingly collect data from anyone under 16.
+          children or teenagers, and we do not knowingly collect data from anyone under 18. On Google Play the app is
+          declared for users aged 18 and over, and we have asked Google to block users it determines to be minors from
+          downloading it.
         </p>
 
         {/* Section: changes */}

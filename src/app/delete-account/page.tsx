@@ -132,7 +132,25 @@ export default function DeleteAccount() {
 
         {/* Section 6 */}
         <h2 className="mt-12 mb-3 font-anton font-normal text-[clamp(26px,3.2vw,38px)] uppercase text-ink leading-[1]">
-          6. Contact
+          6. Deleting only part of it
+        </h2>
+        <p className="text-[15px] leading-[1.7] text-muted">
+          You do not have to burn the whole file to take something back. Any post or letter you wrote can be deleted
+          on its own from inside the app: tap the <span className="font-mono text-ink">✕</span> on the item and
+          confirm. It disappears from the front page, from any thread it appeared in, and from your public rap sheet.
+          Your account is untouched.
+        </p>
+        <p className="mt-3 text-[15px] leading-[1.7] text-muted">
+          If you want something removed that you can&apos;t remove yourself — a particular stretch of usage history,
+          say — email{" "}
+          <a href="mailto:info@codeclowns.com" className="text-orange underline">info@codeclowns.com</a> and tell us
+          what to take out. Your account stays as it is. The same ownership check described in Section 2 applies, for
+          the same reason.
+        </p>
+
+        {/* Section 7 */}
+        <h2 className="mt-12 mb-3 font-anton font-normal text-[clamp(26px,3.2vw,38px)] uppercase text-ink leading-[1]">
+          7. Contact
         </h2>
         <p className="text-[15px] leading-[1.7] text-muted mb-2">
           <span className="text-ink font-semibold">CodeClowns Technologies LLP</span>

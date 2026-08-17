@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "What cookd reads from your machine, what it sends to our servers, what it never touches, and how to get your data deleted.",
 };
 
-const LAST_UPDATED = "15 June 2026";
+const LAST_UPDATED = "17 August 2026";
 
 const SYNC_FIELDS: { field: string; type: string; description: string }[] = [
   { field: "status", type: "idle | cooking | cookd", description: "Current rolling-window state" },
@@ -86,9 +86,9 @@ export default function PrivacyPolicy() {
           </div>
           <ul className="m-0 pl-5 list-disc text-[14.5px] leading-[1.7] text-muted space-y-[6px]">
             <li>We collect token counts, timestamps, model names, and tool <em>names</em>, never content.</li>
-            <li>Your identity on our servers is a random 32-character device ID. No email or username is required to use the companion.</li>
-            <li>All data is stored on Supabase, our database and infrastructure provider.</li>
-            <li>You can ask us to delete everything tied to your device ID at any time.</li>
+            <li>No email address and no password, ever. Your account is a handle you choose, linked by a six-character press code from the companion.</li>
+            <li>Data lives on Supabase. Crash reports go to Sentry. Your numbers (never prompts, never code) go to Anthropic to write your roast.</li>
+            <li>You can delete everything from inside the app: <span className="font-mono text-ink">burn my file</span>.</li>
           </ul>
         </div>
 
@@ -223,6 +223,23 @@ export default function PrivacyPolicy() {
           Roast cards, heat index data, and front-page posts are generated from the usage numbers described in
           Section 1, formatted as editorial copy.
         </p>
+        <p className="mt-4 text-[15px] leading-[1.7] text-muted">
+          Internally your account is keyed to a synthetic identifier of the form{" "}
+          <span className="font-mono text-ink">&lt;handle&gt;@cookd.dev</span>. That is a database key, not a mailbox,
+          and not your email address; we never ask for one. We also keep a record of each linked device, so a
+          pairing can be trusted and revoked.
+        </p>
+
+        <h3 className="mt-7 mb-2 font-mono font-bold text-[12px] tracking-[0.18em] text-orange">
+          3.1 WHAT IS PUBLIC
+        </h3>
+        <p className="text-[15px] leading-[1.7] text-muted">
+          Your rap sheet has a shareable public page at{" "}
+          <span className="font-mono text-ink">cookd.lol/u/&lt;id&gt;</span>, reachable by anyone holding the link or
+          scanning the press pass QR on your card. It shows your handle, persona, editorial bio, usage statistics,
+          notoriety score and rank, badges, and recent posts. Your top project folder name is deliberately excluded
+          from it. Treat anything you print to the front page as public.
+        </p>
 
         {/* Section: how used */}
         <h2 className="mt-12 mb-3 font-anton font-normal text-[clamp(26px,3.2vw,38px)] uppercase text-ink leading-[1]">
@@ -246,20 +263,46 @@ export default function PrivacyPolicy() {
         <p className="text-[15px] leading-[1.7] text-muted">
           All synced data is stored on <span className="text-ink font-semibold">Supabase</span>, which provides our
           database, authentication, and serverless functions. Supabase acts as our infrastructure
-          provider/sub-processor and does not use your data for its own purposes. All companion-to-server requests
-          happen over HTTPS. Subprocess calls made by the companion on your machine use explicit argument arrays
-          (<span className="font-mono">execFile</span>), never shell-string execution, to prevent command injection.
+          provider/sub-processor and does not use your data for its own purposes. Database access is restricted per
+          account by row-level security, so one account cannot read another&apos;s records. All companion-to-server
+          requests happen over HTTPS. Subprocess calls made by the companion on your machine use explicit argument
+          arrays (<span className="font-mono">execFile</span>), never shell-string execution, to prevent command
+          injection.
         </p>
+        <p className="mt-4 text-[15px] leading-[1.7] text-muted">
+          Three other processors are involved, and only these three:
+        </p>
+        <ul className="mt-2 m-0 pl-5 list-disc text-[14.5px] leading-[1.7] text-muted space-y-[6px]">
+          <li>
+            <span className="text-ink font-semibold">Anthropic</span> receives your usage statistics and your handle
+            when a roast is generated, because a model writes the copy. It never receives your prompts, your
+            conversations, or your code, we do not have those to send.
+          </li>
+          <li>
+            <span className="text-ink font-semibold">Sentry</span> receives crash reports from the mobile app: stack
+            traces, device model, OS version, app version, and breadcrumbs of what you tapped before it broke. This
+            is diagnostics, not analytics, and it carries no usage or content data.
+          </li>
+          <li>
+            <span className="text-ink font-semibold">Google Play</span> handles app distribution and the install and
+            update data that comes with it, governed by Google&apos;s own privacy policy.
+          </li>
+        </ul>
 
         {/* Section: retention */}
         <h2 className="mt-12 mb-3 font-anton font-normal text-[clamp(26px,3.2vw,38px)] uppercase text-ink leading-[1]">
           6. Data retention
         </h2>
         <p className="text-[15px] leading-[1.7] text-muted">
-          We retain usage data for as long as your device ID remains linked to an account, so that your dashboard,
-          heat index, and lifetime stats stay accurate. Per-event sync data is not stored individually, only the
-          rolling-window and daily/lifetime aggregates described in Section 1. If you stop using the companion, your
-          data simply stops updating; it is not automatically purged unless you request deletion (Section 7).
+          Usage detail degrades on purpose. Usage is recorded in fifteen-minute buckets, never as individual
+          events: no per-prompt timestamps exist on our servers. Those buckets collapse into hourly figures after
+          48 hours, and into packed monthly aggregates after seven days. That coarsening is automatic and
+          irreversible.
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.7] text-muted">
+          Your account, your lifetime aggregates, and your posts persist until you delete them (Section 7). If you
+          stop using the companion, your data simply stops updating; the aggregates already recorded are not
+          automatically purged.
         </p>
 
         {/* Section: your rights */}
@@ -267,21 +310,28 @@ export default function PrivacyPolicy() {
           7. Your rights: &quot;burn my file&quot;
         </h2>
         <p className="text-[15px] leading-[1.7] text-muted">
-          Because the only identity we hold is a random device ID, there is nothing to de-anonymize. You can ask us
-          to:
+          The fastest route is inside the app: open your profile and choose{" "}
+          <span className="font-mono text-ink">burn my file</span>. That deletes your account, your usage records,
+          and your posts. It is not a deactivation and it is not a soft delete. You can also ask us to:
         </p>
         <ul className="m-0 pl-5 list-disc text-[14.5px] leading-[1.7] text-muted space-y-[6px]">
-          <li><span className="text-ink font-semibold">Export</span> everything tied to your device ID.</li>
-          <li><span className="text-ink font-semibold">Delete</span> everything tied to your device ID: all sync history, lifetime stats, roast cards, and your handle.</li>
+          <li><span className="text-ink font-semibold">Export</span> everything held against your account.</li>
+          <li><span className="text-ink font-semibold">Delete</span> everything held against your account: all sync history, lifetime stats, roast cards, posts, and your handle.</li>
+          <li><span className="text-ink font-semibold">Correct</span> anything inaccurate in it.</li>
           <li><span className="text-ink font-semibold">Unlink</span> a device without deleting your account data.</li>
         </ul>
         <p className="mt-3 text-[15px] leading-[1.7] text-muted">
           To request any of the above, email{" "}
           <a href="mailto:info@codeclowns.com" className="text-orange underline">info@codeclowns.com</a> with the
           subject line <span className="font-mono text-ink">burn my file</span>. We will action verified requests
-          within 30 days. Uninstalling the companion (<span className="font-mono">npm uninstall -g @codeclowns/cookd</span>{" "}
-          and deleting <span className="font-mono">~/.cookd/</span>) stops all future syncing immediately but does
-          not, on its own, delete data already on our servers; email us for that.
+          within 30 days. Depending on where you live you may have further rights over your personal data, including
+          access, portability, and objection; the same address reaches us for those.
+        </p>
+        <p className="mt-3 text-[15px] leading-[1.7] text-muted">
+          Uninstalling the companion (<span className="font-mono">npm uninstall -g @codeclowns/cookd</span> and
+          deleting <span className="font-mono">~/.cookd/</span>) stops all future syncing from your machine
+          immediately, but does not on its own delete data already on our servers. Use{" "}
+          <span className="font-mono text-ink">burn my file</span> for that.
         </p>
 
         {/* Section: this website */}

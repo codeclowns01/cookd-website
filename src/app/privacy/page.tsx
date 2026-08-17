@@ -310,9 +310,11 @@ export default function PrivacyPolicy() {
           7. Your rights: &quot;burn my file&quot;
         </h2>
         <p className="text-[15px] leading-[1.7] text-muted">
-          The fastest route is inside the app: open your profile and choose{" "}
-          <span className="font-mono text-ink">burn my file</span>. That deletes your account, your usage records,
-          and your posts. It is not a deactivation and it is not a soft delete. You can also ask us to:
+          The fastest route is inside the app: open your <span className="font-mono text-ink">RAP SHEET</span> and
+          choose <span className="font-mono text-ink">burn my file</span>. That deletes your account, your usage
+          records, and your posts. It is not a deactivation and it is not a soft delete. Step-by-step instructions,
+          and what to do if you have lost access to the app, are on{" "}
+          <a href="/delete-account" className="text-orange underline">the deletion page</a>. You can also ask us to:
         </p>
         <ul className="m-0 pl-5 list-disc text-[14.5px] leading-[1.7] text-muted space-y-[6px]">
           <li><span className="text-ink font-semibold">Export</span> everything held against your account.</li>

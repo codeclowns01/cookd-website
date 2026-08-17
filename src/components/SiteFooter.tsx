@@ -55,6 +55,12 @@ export default function SiteFooter() {
             >
               PRIVACY POLICY
             </a>
+            <a
+              href="/delete-account"
+              className="no-underline inline-flex items-center gap-[8px] border border-border rounded-full px-[16px] py-[9px] font-mono font-semibold text-[11px] tracking-[0.14em] text-muted hover:text-ink hover:border-ink transition-colors"
+            >
+              DELETE ACCOUNT
+            </a>
             <div className="flex items-center gap-[10px]">
               {SOCIAL_LINKS.map((s) => (
                 <a

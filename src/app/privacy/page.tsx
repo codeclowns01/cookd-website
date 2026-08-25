@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "What cookd reads from your machine, what it sends to our servers, what it never touches, and how to get your data deleted.",
 };
 
-const LAST_UPDATED = "17 August 2026";
+const LAST_UPDATED = "25 August 2026";
 
 const SYNC_FIELDS: { field: string; type: string; description: string }[] = [
   { field: "status", type: "idle | cooking | cookd", description: "Current rolling-window state" },

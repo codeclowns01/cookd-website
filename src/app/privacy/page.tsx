@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "What cookd reads from your machine, what it sends to our servers, what it never touches, and how to get your data deleted.",
 };
 
-const LAST_UPDATED = "17 August 2026";
+const LAST_UPDATED = "25 August 2026";
 
 const SYNC_FIELDS: { field: string; type: string; description: string }[] = [
   { field: "status", type: "idle | cooking | cookd", description: "Current rolling-window state" },
@@ -239,6 +239,32 @@ export default function PrivacyPolicy() {
           scanning the press pass QR on your card. It shows your handle, persona, editorial bio, usage statistics,
           notoriety score and rank, badges, and recent posts. Your top project folder name is deliberately excluded
           from it. Treat anything you print to the front page as public.
+        </p>
+
+        <h3 className="mt-7 mb-2 font-mono font-bold text-[12px] tracking-[0.18em] text-orange">
+          3.2 MODERATION: REPORTS AND BLOCKS
+        </h3>
+        <p className="text-[15px] leading-[1.7] text-muted">
+          When you <span className="text-ink font-semibold">report</span> a post, a letter, or a user, we store who
+          reported what, the reason you chose, and any note you added. Reports are visible only to you and to us:{" "}
+          <span className="text-ink font-semibold">the person you report is never told who reported them.</span>
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.7] text-muted">
+          When you <span className="text-ink font-semibold">block</span> someone, we store that block so we can hide
+          their posts and letters from you and yours from them. Blocking is private; the other person is not
+          notified. Blocking also removes any following between you in both directions, and unblocking does not
+          restore it.
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.7] text-muted">
+          Content we remove is hidden rather than erased immediately, so a moderation decision can be reviewed and
+          reversed. Reports and moderation records tied to your account are deleted when you delete your account
+          (Section 7), except where we are required to retain something by law, including material reported under
+          our <a href="/child-safety" className="text-orange underline">Child Safety Policy</a>.
+        </p>
+        <p className="mt-4 text-[15px] leading-[1.7] text-muted">
+          What is and is not allowed is set out in our{" "}
+          <a href="/guidelines" className="text-orange underline">Community Guidelines</a>, which form part of our{" "}
+          <a href="/terms" className="text-orange underline">Terms of Use</a>.
         </p>
 
         {/* Section: how used */}

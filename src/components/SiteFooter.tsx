@@ -77,7 +77,29 @@ export default function SiteFooter() {
             </div>
           </div>
         </div>
-        <div className="mt-9 border-t border-border pt-[18px] flex flex-col sm:flex-row justify-between gap-[8px] sm:gap-[10px]">
+        {/* Legal nav. Google Play checks that the privacy policy and child-safety
+            URLs resolve before it evaluates anything else in the listing, and a
+            reviewer looks for these by name — so they are spelled out rather than
+            grouped behind one "Legal" link. */}
+        <nav aria-label="Legal" className="mt-9 border-t border-border pt-[18px] flex flex-wrap gap-x-6 gap-y-2">
+          {[
+            { href: "/guidelines", label: "COMMUNITY GUIDELINES" },
+            { href: "/terms", label: "TERMS OF USE" },
+            { href: "/privacy", label: "PRIVACY POLICY" },
+            { href: "/child-safety", label: "CHILD SAFETY" },
+            { href: "/delete-account", label: "DELETE ACCOUNT" },
+          ].map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="no-underline font-mono font-semibold text-[10.5px] tracking-[0.14em] text-muted hover:text-ink transition-colors"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="mt-6 border-t border-border pt-[18px] flex flex-col sm:flex-row justify-between gap-[8px] sm:gap-[10px]">
           <span className="font-mono text-[9.5px] sm:text-[10.5px] tracking-[0.12em] text-faint">© 2026 CODECLOWNS TECHNOLOGIES LLP · ALL FLOPS RESERVED</span>
           <span className="font-mono text-[9.5px] sm:text-[10.5px] tracking-[0.12em] text-faint">0 FRIENDS · 38,400,000 TOKENS · DIGNITY: NOT FOUND</span>
         </div>

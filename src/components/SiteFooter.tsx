@@ -87,6 +87,7 @@ export default function SiteFooter() {
             { href: "/terms", label: "TERMS OF USE" },
             { href: "/privacy", label: "PRIVACY POLICY" },
             { href: "/child-safety", label: "CHILD SAFETY" },
+            { href: "/delete-account", label: "DELETE ACCOUNT" },
           ].map((l) => (
             <a
               key={l.href}

@@ -242,7 +242,7 @@ export default function PrivacyPolicy() {
         </p>
 
         <h3 className="mt-7 mb-2 font-mono font-bold text-[12px] tracking-[0.18em] text-orange">
-          3.1 MODERATION: REPORTS AND BLOCKS
+          3.2 MODERATION: REPORTS AND BLOCKS
         </h3>
         <p className="text-[15px] leading-[1.7] text-muted">
           When you <span className="text-ink font-semibold">report</span> a post, a letter, or a user, we store who
